@@ -34,10 +34,10 @@ jobs:
       - name: Build
         run: npm run build
 
+      # Richiede che Pages sia attivo con sorgente "GitHub Actions"
+      # (Settings → Pages). Il token del workflow non può attivarlo da solo.
       - name: Configure Pages
         uses: actions/configure-pages@v5
-        with:
-          enablement: true
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

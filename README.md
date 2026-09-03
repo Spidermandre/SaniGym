@@ -26,6 +26,11 @@ Il workflow `.github/workflows/deploy.yml` esegue il build e pubblica `dist/`
 a ogni push sul branch di sviluppo o su `main`. Si può lanciare anche a mano
 dalla tab **Actions** → *Deploy PWA su GitHub Pages* → *Run workflow*.
 
+**Attivazione una tantum:** in *Settings → Pages*, alla voce *Build and
+deployment → Source*, scegli **GitHub Actions**. Senza questo passaggio il
+deploy fallisce, perché il token del workflow non ha il permesso di creare
+il sito Pages.
+
 ## Installare la PWA
 
 In alternativa la cartella `dist/` è un sito statico: puoi pubblicarla su
