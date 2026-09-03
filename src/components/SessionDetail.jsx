@@ -26,7 +26,7 @@ export default function SessionDetail({ session, alts, onBack, onStart }) {
           const useAlt = alts.isAlt(session.id, i);
           const ex = resolveExercise(raw, useAlt);
           return (
-          <div key={i} style={{ ...S.glass, padding: "15px 16px", marginBottom: 10, borderColor: useAlt ? "rgba(99,102,241,.35)" : undefined }}>
+          <div key={i} style={{ ...S.glass, padding: "15px 16px", marginBottom: 10, ...(useAlt ? { borderColor: "rgba(99,102,241,.35)" } : {}) }}>
             <div style={{ display: "flex", gap: 13, alignItems: "flex-start" }}>
               <div style={{ width: 36, height: 36, borderRadius: 10, background: g, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 14, flexShrink: 0, color: "#fff" }}>{i + 1}</div>
               <div style={{ flex: 1, minWidth: 0 }}>

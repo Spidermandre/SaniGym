@@ -76,7 +76,7 @@ export default function WorkoutMode({ session: rawSession, block, onExit }) {
   return (
     <div style={{ position: "fixed", inset: 0, zIndex: 200, background: "linear-gradient(180deg,#f8f9fd 0%,#eef1f8 100%)", display: "flex", flexDirection: "column", fontFamily: "system-ui,sans-serif", color: T1 }}>
       {alarm && <SafetyOverlay onExit={onExit} />}
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: "20px 18px 16px", paddingTop: "max(20px, env(safe-area-inset-top))", paddingBottom: "max(16px, env(safe-area-inset-bottom))", overflowY: "auto" }}>
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: "20px 18px 8px", paddingTop: "max(20px, env(safe-area-inset-top))", overflowY: "auto" }}>
 
         {/* header */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
@@ -121,20 +121,22 @@ export default function WorkoutMode({ session: rawSession, block, onExit }) {
                   ))}
                 </div>
                 {ex.tempo && (
-                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
-                    <span style={S.pill} title="eccentrica-pausa-concentrica (secondi)">⏱ tempo {ex.tempo}</span>
-                    <span style={{ fontSize: 11, color: T4 }}>eccentrica-pausa-concentrica (secondi)</span>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
+                    <span style={{ ...S.pill, flexShrink: 0 }} title="eccentrica-pausa-concentrica (secondi)">⏱ tempo {ex.tempo}</span>
+                    <span style={{ fontSize: 10, color: T4, lineHeight: 1.3 }}>eccentrica-pausa-concentrica (secondi)</span>
                   </div>
                 )}
 
                 {ex.weight && (
-                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16, padding: "11px 16px", borderRadius: 14, background: "rgba(3,105,161,.07)", border: "1px solid rgba(3,105,161,.15)" }}>
-                    <span style={{ fontSize: 20 }}>🏋️</span>
-                    <div>
-                      <div style={{ fontSize: 10, color: T4, textTransform: "uppercase", letterSpacing: ".05em", marginBottom: 2 }}>Peso consigliato</div>
-                      <div style={{ fontSize: 16, fontWeight: 800, color: "#0369a1" }}>{ex.weight}</div>
+                  <div style={{ marginBottom: 16, padding: "11px 16px", borderRadius: 14, background: "rgba(3,105,161,.07)", border: "1px solid rgba(3,105,161,.15)" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                      <span style={{ fontSize: 20 }}>🏋️</span>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ fontSize: 10, color: T4, textTransform: "uppercase", letterSpacing: ".05em", marginBottom: 2 }}>Peso consigliato</div>
+                        <div style={{ fontSize: 16, fontWeight: 800, color: "#0369a1" }}>{ex.weight}</div>
+                      </div>
                     </div>
-                    <div style={{ marginLeft: "auto", fontSize: 11, color: T3, lineHeight: 1.4, maxWidth: 140, textAlign: "right" }}>Aumenta di 2.5 kg se arrivi al tetto delle rip con 2 in riserva</div>
+                    <div style={{ fontSize: 11, color: T3, lineHeight: 1.4, marginTop: 6 }}>Aumenta di 2.5 kg se arrivi al tetto delle rip con 2 in riserva</div>
                   </div>
                 )}
 
@@ -162,11 +164,6 @@ export default function WorkoutMode({ session: rawSession, block, onExit }) {
                   <p style={{ fontSize: 13, color: T2, lineHeight: 1.6 }}>{ex.note}</p>
                 </div>
               </div>
-
-              {isReviewing
-                ? <button style={{ ...S.btnGrad(g), width: "100%", marginTop: 20, fontSize: 15, padding: "16px" }} onClick={goToCurrent}>→ Torna all'esercizio attuale</button>
-                : <button style={{ ...S.btnGrad(g), width: "100%", marginTop: 20, fontSize: 16, padding: "17px" }} onClick={completeSet}>✓  Set completato — recupero {ex.rest}''</button>
-              }
             </>
           ) : (
             <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 18 }}>
@@ -177,9 +174,15 @@ export default function WorkoutMode({ session: rawSession, block, onExit }) {
             </div>
           )}
         </div>
+      </div>
 
-        {/* sicurezza clinica */}
-        <button onClick={() => setAlarm(true)} style={{ ...S.btnGhost, width: "100%", marginTop: 12, padding: "12px 16px", fontSize: 13, minHeight: 44,
+      {/* footer fisso: azione principale + sicurezza clinica, sempre sotto il pollice */}
+      <div style={{ flexShrink: 0, padding: "10px 18px", paddingBottom: "max(14px, env(safe-area-inset-bottom))", background: "linear-gradient(180deg, rgba(238,241,248,0) 0%, #eef1f8 30%)" }}>
+        {phase === "exercise" && (isReviewing
+          ? <button style={{ ...S.btnGrad(g), width: "100%", fontSize: 15, padding: "16px" }} onClick={goToCurrent}>→ Torna all'esercizio attuale</button>
+          : <button style={{ ...S.btnGrad(g), width: "100%", fontSize: 16, padding: "17px" }} onClick={completeSet}>✓  Set completato — recupero {ex.rest}''</button>
+        )}
+        <button onClick={() => setAlarm(true)} style={{ ...S.btnGhost, width: "100%", marginTop: 10, padding: "11px 16px", fontSize: 13, minHeight: 44,
           background: "rgba(220,38,38,.06)", borderColor: "rgba(220,38,38,.22)", color: "#b91c1c" }}>
           ⚠️ Sintomi al braccio dx
         </button>
