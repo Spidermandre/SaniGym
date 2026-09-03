@@ -1,5 +1,6 @@
 import { useState } from "react";
 import RestTimer from "./RestTimer.jsx";
+import SafetyOverlay from "./SafetyOverlay.jsx";
 import useWeightLog, { fmtDate } from "../hooks/useWeightLog.js";
 import { S, T1, T2, T3, T4, grad } from "../styles.js";
 
@@ -13,6 +14,7 @@ export default function WorkoutMode({ session: rawSession, block, onExit }) {
   const [furthest, setFurthest] = useState(0);
   const [setsDone, setSetsDone] = useState({});
   const [phase, setPhase] = useState("exercise");
+  const [alarm, setAlarm] = useState(false);
   const ex = session.exercises[exIdx];
 
   // Registro carichi: snapshot all'avvio (per "Ultima volta" e precompilazione),
@@ -73,6 +75,7 @@ export default function WorkoutMode({ session: rawSession, block, onExit }) {
 
   return (
     <div style={{ position: "fixed", inset: 0, zIndex: 200, background: "linear-gradient(180deg,#f8f9fd 0%,#eef1f8 100%)", display: "flex", flexDirection: "column", fontFamily: "system-ui,sans-serif", color: T1 }}>
+      {alarm && <SafetyOverlay onExit={onExit} />}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: "20px 18px 16px", paddingTop: "max(20px, env(safe-area-inset-top))", paddingBottom: "max(16px, env(safe-area-inset-bottom))", overflowY: "auto" }}>
 
         {/* header */}
@@ -174,6 +177,12 @@ export default function WorkoutMode({ session: rawSession, block, onExit }) {
             </div>
           )}
         </div>
+
+        {/* sicurezza clinica */}
+        <button onClick={() => setAlarm(true)} style={{ ...S.btnGhost, width: "100%", marginTop: 12, padding: "12px 16px", fontSize: 13, minHeight: 44,
+          background: "rgba(220,38,38,.06)", borderColor: "rgba(220,38,38,.22)", color: "#b91c1c" }}>
+          ⚠️ Sintomi al braccio dx
+        </button>
       </div>
     </div>
   );
