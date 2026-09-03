@@ -16,19 +16,29 @@ npm run preview  # serve la build di produzione in locale
 Stack: Vite + React 18, JavaScript, nessuna libreria UI, nessun backend.
 Persistenza in `localStorage` (alternative scelte, settimana del blocco, registro carichi).
 
+## Indirizzo online
+
+L'app è pubblicata su GitHub Pages:
+
+**https://spidermandre.github.io/SaniGym/**
+
+Il workflow `.github/workflows/deploy.yml` esegue il build e pubblica `dist/`
+a ogni push sul branch di sviluppo o su `main`. Si può lanciare anche a mano
+dalla tab **Actions** → *Deploy PWA su GitHub Pages* → *Run workflow*.
+
 ## Installare la PWA
 
-La cartella `dist/` è un sito statico: pubblicala su qualsiasi hosting HTTPS
-(GitHub Pages, Netlify, Vercel…) oppure servila in rete locale con `npm run preview`.
+In alternativa la cartella `dist/` è un sito statico: puoi pubblicarla su
+qualsiasi hosting HTTPS oppure servirla in rete locale con `npm run preview`.
 
 **iPhone (Safari)**
-1. Apri l'indirizzo dell'app in Safari.
+1. Apri https://spidermandre.github.io/SaniGym/ in Safari.
 2. Tocca il pulsante **Condividi** (il quadrato con la freccia verso l'alto).
 3. Scorri e tocca **Aggiungi alla schermata Home**, poi **Aggiungi**.
 4. L'icona 💪 SaniFit compare in Home e si apre a schermo intero, anche offline.
 
 **Android (Chrome)**
-1. Apri l'indirizzo dell'app in Chrome.
+1. Apri https://spidermandre.github.io/SaniGym/ in Chrome.
 2. Menu ⋮ → **Installa app** (oppure **Aggiungi a schermata Home**).
 
 ## Struttura
