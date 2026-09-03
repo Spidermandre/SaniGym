@@ -1,5 +1,6 @@
 import { useState } from "react";
 import RestTimer from "./RestTimer.jsx";
+import useWeightLog, { fmtDate } from "../hooks/useWeightLog.js";
 import { S, T1, T2, T3, T4, grad } from "../styles.js";
 
 export default function WorkoutMode({ session: rawSession, block, onExit }) {
@@ -13,6 +14,16 @@ export default function WorkoutMode({ session: rawSession, block, onExit }) {
   const [setsDone, setSetsDone] = useState({});
   const [phase, setPhase] = useState("exercise");
   const ex = session.exercises[exIdx];
+
+  // Registro carichi: snapshot all'avvio (per "Ultima volta" e precompilazione),
+  // scrittura ad ogni set completato.
+  const wlog = useWeightLog();
+  const [history] = useState(() => ({ ...wlog.log }));
+  const [weights, setWeights] = useState({});
+  const lastFor = (i) => history[`${session.id}:${i}:${session.exercises[i].altUsed ? "alt" : "main"}`] || null;
+  const weightValue = weights[exIdx] ?? (lastFor(exIdx)?.weight ?? "");
+  const setWeightValue = (v) => setWeights((p) => ({ ...p, [exIdx]: v }));
+  const last = lastFor(exIdx);
   const curSets = setsDone[exIdx] || 0;
   const isReviewing = exIdx < furthest;
   const g = grad(session);
@@ -24,6 +35,10 @@ export default function WorkoutMode({ session: rawSession, block, onExit }) {
     if (isReviewing) return;
     const next = curSets + 1;
     setSetsDone((p) => ({ ...p, [exIdx]: next }));
+    const w = parseFloat(String(weightValue).replace(",", "."));
+    if (!Number.isNaN(w)) {
+      wlog.save({ sessionId: session.id, exIdx, altUsed: !!ex.altUsed, week: block?.week ?? null, date: new Date().toISOString(), weight: w, sets: next });
+    }
     if (next >= ex.sets && exIdx === session.exercises.length - 1) setPhase("done");
     else setPhase("rest");
   };
@@ -119,6 +134,18 @@ export default function WorkoutMode({ session: rawSession, block, onExit }) {
                     <div style={{ marginLeft: "auto", fontSize: 11, color: T3, lineHeight: 1.4, maxWidth: 140, textAlign: "right" }}>Aumenta di 2.5 kg se arrivi al tetto delle rip con 2 in riserva</div>
                   </div>
                 )}
+
+                {/* registro carichi */}
+                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16, marginTop: ex.weight ? -6 : 0 }}>
+                  <label htmlFor="peso-usato" style={{ fontSize: 12, color: T3, flex: 1 }}>
+                    Peso usato (kg)
+                    {last && <div style={{ fontSize: 11, color: T4, marginTop: 2 }}>Ultima volta: {last.weight} kg · {fmtDate(last.date)}</div>}
+                  </label>
+                  <input id="peso-usato" type="number" inputMode="decimal" step="0.5" min="0" placeholder="—"
+                    value={weightValue} onChange={(e) => setWeightValue(e.target.value)} disabled={isReviewing}
+                    style={{ width: 96, height: 44, borderRadius: 12, border: "1px solid rgba(17,21,28,.12)", background: "rgba(255,255,255,.75)",
+                      fontSize: 18, fontWeight: 800, color: "#0369a1", textAlign: "center", outline: "none" }} />
+                </div>
 
                 {/* set progress dots */}
                 <div style={{ display: "flex", gap: 5, marginBottom: 16 }}>
