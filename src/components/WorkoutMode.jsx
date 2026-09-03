@@ -91,9 +91,10 @@ export default function WorkoutMode({ session: rawSession, block, onExit }) {
                   <div style={{ ...S.pill, display: "inline-flex" }}>{session.tag}{block ? ` · RIR ${block.rir}` : ""}</div>
                   {isDeload && <div style={{ ...S.pill, display: "inline-flex", background: "rgba(16,185,129,.1)", borderColor: "rgba(16,185,129,.3)", color: "#047857" }}>🌿 Deload: metà serie, stessi carichi</div>}
                 </div>
-                <h2 style={{ fontSize: 21, fontWeight: 800, lineHeight: 1.25, marginBottom: 16 }}>{ex.name}</h2>
+                <h2 style={{ fontSize: 21, fontWeight: 800, lineHeight: 1.25, marginBottom: ex.focus ? 4 : 16 }}>{ex.name}</h2>
+                {ex.focus && <div style={{ fontSize: 13, color: T3, marginBottom: 14 }}>{ex.focus}</div>}
 
-                <div style={{ display: "flex", gap: 10, marginBottom: 16 }}>
+                <div style={{ display: "flex", gap: 10, marginBottom: ex.tempo ? 10 : 16 }}>
                   {[["Serie", ex.sets], ["Rip", ex.reps], ["Set", `${curSets}/${ex.sets}`]].map(([k, v]) => (
                     <div key={k} style={{ ...S.glassSm, flex: 1, textAlign: "center", padding: "11px 6px" }}>
                       <div style={{ fontSize: 10, color: T4, textTransform: "uppercase", letterSpacing: ".05em", marginBottom: 3 }}>{k}</div>
@@ -101,6 +102,12 @@ export default function WorkoutMode({ session: rawSession, block, onExit }) {
                     </div>
                   ))}
                 </div>
+                {ex.tempo && (
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
+                    <span style={S.pill} title="eccentrica-pausa-concentrica (secondi)">⏱ tempo {ex.tempo}</span>
+                    <span style={{ fontSize: 11, color: T4 }}>eccentrica-pausa-concentrica (secondi)</span>
+                  </div>
+                )}
 
                 {ex.weight && (
                   <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16, padding: "11px 16px", borderRadius: 14, background: "rgba(3,105,161,.07)", border: "1px solid rgba(3,105,161,.15)" }}>

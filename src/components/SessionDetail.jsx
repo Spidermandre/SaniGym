@@ -1,4 +1,4 @@
-import { S, T1, T3, grad } from "../styles.js";
+import { S, T1, T3, T4, grad } from "../styles.js";
 import { resolveExercise } from "../hooks/useAltChoices.js";
 
 export default function SessionDetail({ session, alts, onBack, onStart }) {
@@ -30,10 +30,12 @@ export default function SessionDetail({ session, alts, onBack, onStart }) {
             <div style={{ display: "flex", gap: 13, alignItems: "flex-start" }}>
               <div style={{ width: 36, height: 36, borderRadius: 10, background: g, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 14, flexShrink: 0, color: "#fff" }}>{i + 1}</div>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 5, color: T1 }}>{ex.name}</div>
+                <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 2, color: T1 }}>{ex.name}</div>
+                {ex.focus && <div style={{ fontSize: 12, color: T4, marginBottom: 6 }}>{ex.focus}</div>}
                 <div style={{ display: "flex", gap: 8, marginBottom: 6, flexWrap: "wrap" }}>
                   <span style={{ fontSize: 12, color: T3 }}>📊 {ex.sets} × {ex.reps}</span>
                   <span style={{ fontSize: 12, color: T3 }}>⏱ {ex.rest}''</span>
+                  {ex.tempo && <span style={{ fontSize: 12, color: T3 }} title="eccentrica-pausa-concentrica (secondi)">🎵 tempo {ex.tempo}</span>}
                   {ex.weight && <span style={{ fontSize: 12, fontWeight: 700, color: "#0369a1" }}>🏋️ {ex.weight}</span>}
                 </div>
                 <p style={{ fontSize: 12, color: T3, lineHeight: 1.55 }}>{ex.note}</p>
