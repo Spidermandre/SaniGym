@@ -1,6 +1,7 @@
 import { S, T1, T3, grad } from "../styles.js";
+import { resolveExercise } from "../hooks/useAltChoices.js";
 
-export default function SessionDetail({ session, onBack, onStart }) {
+export default function SessionDetail({ session, alts, onBack, onStart }) {
   const g = grad(session);
   const totalSets = session.exercises.reduce((a, e) => a + e.sets, 0);
   return (
@@ -21,8 +22,11 @@ export default function SessionDetail({ session, onBack, onStart }) {
       </div>
       <div style={{ padding: "20px 16px 0" }}>
         <button style={{ ...S.btnGrad(g), width: "100%", marginBottom: 18, fontSize: 16, padding: "17px" }} onClick={onStart}>▶  Inizia sessione guidata</button>
-        {session.exercises.map((ex, i) => (
-          <div key={i} style={{ ...S.glass, padding: "15px 16px", marginBottom: 10 }}>
+        {session.exercises.map((raw, i) => {
+          const useAlt = alts.isAlt(session.id, i);
+          const ex = resolveExercise(raw, useAlt);
+          return (
+          <div key={i} style={{ ...S.glass, padding: "15px 16px", marginBottom: 10, borderColor: useAlt ? "rgba(99,102,241,.35)" : undefined }}>
             <div style={{ display: "flex", gap: 13, alignItems: "flex-start" }}>
               <div style={{ width: 36, height: 36, borderRadius: 10, background: g, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 14, flexShrink: 0, color: "#fff" }}>{i + 1}</div>
               <div style={{ flex: 1, minWidth: 0 }}>
@@ -33,10 +37,17 @@ export default function SessionDetail({ session, onBack, onStart }) {
                   {ex.weight && <span style={{ fontSize: 12, fontWeight: 700, color: "#0369a1" }}>🏋️ {ex.weight}</span>}
                 </div>
                 <p style={{ fontSize: 12, color: T3, lineHeight: 1.55 }}>{ex.note}</p>
+                {raw.alt && (
+                  <button onClick={() => alts.toggleAlt(session.id, i)} style={{ ...S.btnGhost, marginTop: 10, padding: "8px 14px", fontSize: 12, minHeight: 44,
+                    ...(useAlt ? { background: "rgba(99,102,241,.08)", borderColor: "rgba(99,102,241,.25)", color: "#4338ca" } : {}) }}>
+                    {useAlt ? "↩ Originale" : "↔ Alternativa"}
+                  </button>
+                )}
               </div>
             </div>
           </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

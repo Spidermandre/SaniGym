@@ -4,6 +4,7 @@ import Sessions from "./components/Sessions.jsx";
 import SessionDetail from "./components/SessionDetail.jsx";
 import WorkoutMode from "./components/WorkoutMode.jsx";
 import Mobility from "./components/Mobility.jsx";
+import useAltChoices from "./hooks/useAltChoices.js";
 import { T1, T4 } from "./styles.js";
 
 const NAV = [
@@ -25,6 +26,7 @@ export default function App() {
   const [nav, setNav] = useState("home");
   const [sel, setSel] = useState(null);
   const [workout, setWorkout] = useState(null);
+  const alts = useAltChoices();
   const goSession = (s) => { setSel(s); setNav("detail"); };
   const goBack = () => { setSel(null); setNav("sessions"); };
   const exitWorkout = () => { setWorkout(null); setSel(null); setNav("home"); };
@@ -33,12 +35,12 @@ export default function App() {
   return (
     <div style={{ minHeight: "100vh", background: "#f8f9fd", position: "relative", fontFamily: "system-ui,sans-serif", color: T1 }}>
       <div style={bg} />
-      {workout && <WorkoutMode session={workout} onExit={exitWorkout} />}
+      {workout && <WorkoutMode session={alts.resolveSession(workout)} onExit={exitWorkout} />}
       {!workout && (
         <div style={{ position: "relative", zIndex: 1, minHeight: "100vh" }}>
           {nav === "home" && <Home onSelect={goSession} />}
           {nav === "sessions" && !sel && <Sessions onSelect={goSession} />}
-          {nav === "detail" && sel && <SessionDetail session={sel} onBack={goBack} onStart={() => setWorkout(sel)} />}
+          {nav === "detail" && sel && <SessionDetail session={sel} alts={alts} onBack={goBack} onStart={() => setWorkout(sel)} />}
           {nav === "mobility" && <Mobility />}
 
           {/* bottom nav */}
