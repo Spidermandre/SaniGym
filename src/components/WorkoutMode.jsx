@@ -2,7 +2,12 @@ import { useState } from "react";
 import RestTimer from "./RestTimer.jsx";
 import { S, T1, T2, T3, T4, grad } from "../styles.js";
 
-export default function WorkoutMode({ session, onExit }) {
+export default function WorkoutMode({ session: rawSession, block, onExit }) {
+  const isDeload = block?.label === "Deload";
+  // Deload: metà delle serie (arrotondate per eccesso), stessi carichi.
+  const session = isDeload
+    ? { ...rawSession, exercises: rawSession.exercises.map((e) => ({ ...e, sets: Math.ceil(e.sets / 2) })) }
+    : rawSession;
   const [exIdx, setExIdx] = useState(0);
   const [furthest, setFurthest] = useState(0);
   const [setsDone, setSetsDone] = useState({});
@@ -82,7 +87,10 @@ export default function WorkoutMode({ session, onExit }) {
           {phase === "exercise" ? (
             <>
               <div style={{ flex: 1 }}>
-                <div style={{ ...S.pill, marginBottom: 14, display: "inline-flex" }}>{session.tag}</div>
+                <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 14 }}>
+                  <div style={{ ...S.pill, display: "inline-flex" }}>{session.tag}{block ? ` · RIR ${block.rir}` : ""}</div>
+                  {isDeload && <div style={{ ...S.pill, display: "inline-flex", background: "rgba(16,185,129,.1)", borderColor: "rgba(16,185,129,.3)", color: "#047857" }}>🌿 Deload: metà serie, stessi carichi</div>}
+                </div>
                 <h2 style={{ fontSize: 21, fontWeight: 800, lineHeight: 1.25, marginBottom: 16 }}>{ex.name}</h2>
 
                 <div style={{ display: "flex", gap: 10, marginBottom: 16 }}>

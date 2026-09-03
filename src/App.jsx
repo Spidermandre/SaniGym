@@ -5,6 +5,8 @@ import SessionDetail from "./components/SessionDetail.jsx";
 import WorkoutMode from "./components/WorkoutMode.jsx";
 import Mobility from "./components/Mobility.jsx";
 import useAltChoices from "./hooks/useAltChoices.js";
+import usePersistedState from "./hooks/usePersistedState.js";
+import { BLOCK } from "./data/programma.js";
 import { T1, T4 } from "./styles.js";
 
 const NAV = [
@@ -27,6 +29,8 @@ export default function App() {
   const [sel, setSel] = useState(null);
   const [workout, setWorkout] = useState(null);
   const alts = useAltChoices();
+  const [week, setWeek] = usePersistedState("sanifit.week", 1);
+  const block = BLOCK.find((b) => b.week === week) || BLOCK[0];
   const goSession = (s) => { setSel(s); setNav("detail"); };
   const goBack = () => { setSel(null); setNav("sessions"); };
   const exitWorkout = () => { setWorkout(null); setSel(null); setNav("home"); };
@@ -35,10 +39,10 @@ export default function App() {
   return (
     <div style={{ minHeight: "100vh", background: "#f8f9fd", position: "relative", fontFamily: "system-ui,sans-serif", color: T1 }}>
       <div style={bg} />
-      {workout && <WorkoutMode session={alts.resolveSession(workout)} onExit={exitWorkout} />}
+      {workout && <WorkoutMode session={alts.resolveSession(workout)} block={block} onExit={exitWorkout} />}
       {!workout && (
         <div style={{ position: "relative", zIndex: 1, minHeight: "100vh" }}>
-          {nav === "home" && <Home onSelect={goSession} />}
+          {nav === "home" && <Home onSelect={goSession} week={week} setWeek={setWeek} block={block} />}
           {nav === "sessions" && !sel && <Sessions onSelect={goSession} />}
           {nav === "detail" && sel && <SessionDetail session={sel} alts={alts} onBack={goBack} onStart={() => setWorkout(sel)} />}
           {nav === "mobility" && <Mobility />}

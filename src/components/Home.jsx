@@ -1,7 +1,9 @@
-import { PROGRAM_META, SESSIONS, WEEK } from "../data/programma.js";
+import { PROGRAM_META, BLOCK, SESSIONS, WEEK } from "../data/programma.js";
 import { S, T1, T2, T3, T4, grad } from "../styles.js";
 
-export default function Home({ onSelect }) {
+export default function Home({ onSelect, week, setWeek, block }) {
+  const maxWeek = BLOCK.length;
+  const isDeload = block.label === "Deload";
   const dayMap = ["DOM", "LUN", "MAR", "MER", "GIO", "VEN", "SAB"];
   const todayCode = dayMap[new Date().getDay()];
   const todayEntry = WEEK.find((w) => w.day === todayCode);
@@ -13,6 +15,23 @@ export default function Home({ onSelect }) {
         <p style={{ fontSize: 13, color: T3, marginBottom: 2 }}>Il tuo allenamento personale 💪</p>
         <h1 style={{ fontSize: 34, fontWeight: 800, letterSpacing: "-.02em", color: T1 }}>{PROGRAM_META.name}</h1>
         <p style={{ color: T4, fontSize: 13, marginTop: 3 }}>{PROGRAM_META.subtitle}</p>
+      </div>
+
+      {/* blocco 8 settimane */}
+      <div style={{ ...S.glass, padding: "12px 12px 12px 16px", marginBottom: 22, display: "flex", alignItems: "center", gap: 10,
+        ...(isDeload ? { background: "rgba(16,185,129,.08)", borderColor: "rgba(16,185,129,.3)" } : {}) }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ fontSize: 13, fontWeight: 800, color: T1 }}>
+            Settimana {week}/{maxWeek} · {block.label} · <span style={{ color: "#0369a1" }}>RIR {block.rir}</span>
+          </div>
+          <p style={{ fontSize: 12, color: T3, lineHeight: 1.5, marginTop: 3 }}>{block.note}</p>
+        </div>
+        <div style={{ display: "flex", gap: 4, flexShrink: 0 }}>
+          <button aria-label="Settimana precedente" onClick={() => setWeek(Math.max(1, week - 1))} disabled={week <= 1}
+            style={{ ...S.iconBtn, width: 44, height: 44, fontSize: 20, opacity: week <= 1 ? .35 : 1 }}>‹</button>
+          <button aria-label="Settimana successiva" onClick={() => setWeek(Math.min(maxWeek, week + 1))} disabled={week >= maxWeek}
+            style={{ ...S.iconBtn, width: 44, height: 44, fontSize: 20, opacity: week >= maxWeek ? .35 : 1 }}>›</button>
+        </div>
       </div>
 
       {/* oggi */}
