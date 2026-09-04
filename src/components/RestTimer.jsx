@@ -10,14 +10,14 @@ export default function RestTimer({ seconds, onDone }) {
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
       <div style={{ position: "relative", width: 104, height: 104 }}>
         <svg width="104" height="104" style={{ transform: "rotate(-90deg)" }}>
-          <circle cx="52" cy="52" r={r} fill="none" stroke="rgba(17,21,28,.08)" strokeWidth="6" />
+          <circle cx="52" cy="52" r={r} fill="none" stroke="rgba(255,255,255,.10)" strokeWidth="6" />
           <circle cx="52" cy="52" r={r} fill="none"
-            stroke={hot ? "#ef4444" : "#10b981"} strokeWidth="6" strokeLinecap="round"
+            stroke={hot ? "#ff4d4d" : "#4ff5e2"} strokeWidth="6" strokeLinecap="round"
             strokeDasharray={circ} strokeDashoffset={offset}
             style={{ transition: "stroke-dashoffset .25s linear" }} />
         </svg>
         <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-          <span style={{ fontSize: 26, fontWeight: 800, color: hot ? "#ef4444" : T1, lineHeight: 1 }}>{time}</span>
+          <span style={{ fontSize: 26, fontWeight: 800, color: hot ? "#ff4d4d" : T1, lineHeight: 1 }}>{time}</span>
           <span style={{ fontSize: 9, color: T4, letterSpacing: ".06em" }}>SEC</span>
         </div>
       </div>

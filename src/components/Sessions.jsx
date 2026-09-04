@@ -1,5 +1,5 @@
 import { PROGRAM_META, SESSIONS } from "../data/programma.js";
-import { S, T1, T3, T4, grad } from "../styles.js";
+import { S, T1, T3, T4, grad, color0 } from "../styles.js";
 
 export default function Sessions({ onSelect }) {
   return (
@@ -9,7 +9,7 @@ export default function Sessions({ onSelect }) {
       {SESSIONS.map((s) => (
         <div key={s.id} style={{ ...S.glass, padding: "16px 18px", marginBottom: 11, cursor: "pointer" }} onClick={() => onSelect(s)}>
           <div style={{ display: "flex", alignItems: "center", gap: 15 }}>
-            <div style={{ width: 48, height: 48, borderRadius: 13, background: grad(s), display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, flexShrink: 0 }}>{s.emoji}</div>
+            <div style={{ width: 48, height: 48, borderRadius: 13, background: grad(s), flexShrink: 0, boxShadow: `0 0 20px ${color0(s)}55` }} />
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ fontWeight: 800, fontSize: 15, color: T1 }}>{s.label} <span style={{ color: T3, fontWeight: 400, fontSize: 13 }}>— {s.subtitle}</span></div>
               <div style={{ fontSize: 12, color: T3, marginTop: 3 }}>{s.day} · {s.exercises.length} esercizi · {s.tag}</div>

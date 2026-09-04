@@ -14,7 +14,11 @@ npm run preview  # serve la build di produzione in locale
 ```
 
 Stack: Vite + React 18, JavaScript, nessuna libreria UI, nessun backend.
-Persistenza in `localStorage` (alternative scelte, settimana del blocco, registro carichi).
+Persistenza in `localStorage` (alternative scelte, settimana del blocco, registro carichi con storico).
+
+Tema scuro: sfondo nero, un colore fluo per sessione (Push A verde chiaro, Push B verde scuro,
+Pull A celeste, Pull B tiffany), navigazione e card in stile *liquid glass*. I colori sono in
+`src/styles.js` (`THEME`) e non toccano i dati della scheda.
 
 ## Indirizzo online
 
@@ -58,13 +62,14 @@ src/
     SessionDetail.jsx        dettaglio con alternative (↔ Alternativa / ↩ Originale)
     WorkoutMode.jsx          sessione guidata (set, recupero, registro carichi, deload, sicurezza)
     RestTimer.jsx            timer circolare di recupero
+    Progress.jsx             progressi: ultimo carico, variazione, massimo per esercizio
     Mobility.jsx             checklist Pre / Post / Riposo
     SafetyOverlay.jsx        overlay "Fermati." non dismissibile
   hooks/
     useTimer.js              timer basato su timestamp (corretto anche dopo il background)
     usePersistedState.js     useState + localStorage
     useAltChoices.js         scelta alternativa per sessione + esercizio
-    useWeightLog.js          registro carichi minimo
+    useWeightLog.js          registro carichi: ultimo valore + storico per giorno
   styles.js                  oggetto S (glassmorphism chiaro) e colori
 public/
   manifest.webmanifest, sw.js, icon.svg, icon-maskable.svg
@@ -78,6 +83,7 @@ reference/SaniFit_rev4.jsx     versione precedente, riferimento visivo e funzion
 - **Blocco di 8 settimane** (`BLOCK`): card in Home con settimana, fase e RIR target, avanzamento manuale con ‹ ›. Nella sessione guidata il RIR compare nella pill del tag; alla settimana 7 (Deload) le serie sono dimezzate con un avviso.
 - **Focus e tempo**: muscolo target sotto il nome dell'esercizio e cadenza "⏱ tempo 3-1-1" (eccentrica-pausa-concentrica, secondi).
 - **Registro carichi**: campo "Peso usato (kg)" precompilato con l'ultimo valore; salvataggio a ogni set; "Ultima volta: X kg · gg/mm".
+- **Progressi** (tab 📈): per ogni esercizio allenato mostra ultimo carico, variazione rispetto alla volta precedente, massimo e numero di sessioni. Riepilogo con allenamenti registrati e data dell'ultimo.
 - **Sicurezza clinica**: bottone "⚠️ Sintomi al braccio dx" sempre visibile nella sessione guidata; apre un overlay che si chiude solo uscendo dalla sessione.
 - Timer di recupero basato su timestamp: continua a contare correttamente se l'app va in background.
 
