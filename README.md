@@ -72,7 +72,10 @@ src/
     useWeightLog.js          registro carichi: ultimo valore + storico per giorno
   styles.js                  oggetto S (glassmorphism chiaro) e colori
 public/
-  manifest.webmanifest, sw.js, icon.svg, icon-maskable.svg
+  manifest.webmanifest, sw.js
+  icon.svg · apple-touch-icon.png (180) · icon-192.png · icon-512.png · icon-maskable-512.png
+  Icona: logogramma "SG" bianco su gradiente blu fluo → celeste fluo.
+  I PNG si rigenerano con lo script in scratchpad (Chromium + public/icon.svg come riferimento).
 docs/RAZIONALE_SCIENTIFICO.md  perché la scheda è fatta così
 reference/SaniFit_rev4.jsx     versione precedente, riferimento visivo e funzionale
 ```
