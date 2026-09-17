@@ -1,6 +1,5 @@
 import { useState } from "react";
 import RestTimer from "./RestTimer.jsx";
-import SafetyOverlay from "./SafetyOverlay.jsx";
 import useWeightLog, { fmtDate } from "../hooks/useWeightLog.js";
 import useWorkingWeights from "../hooks/useWorkingWeights.js";
 import { suggestedMax, stepFor, clampWeight, fmtWeight } from "../lib/weights.js";
@@ -25,7 +24,6 @@ export default function WorkoutMode({ session: rawSession, block, onExit }) {
   const [furthest, setFurthest] = useState(0);
   const [setsDone, setSetsDone] = useState({});
   const [phase, setPhase] = useState("exercise");
-  const [alarm, setAlarm] = useState(false);
   const ex = session.exercises[exIdx];
   const curSets = setsDone[exIdx] || 0;
   const isReviewing = exIdx < furthest;
@@ -92,7 +90,6 @@ export default function WorkoutMode({ session: rawSession, block, onExit }) {
 
   return (
     <div style={{ position: "fixed", inset: 0, zIndex: 200, background: "#000", display: "flex", flexDirection: "column", fontFamily: "system-ui,sans-serif", color: T1 }}>
-      {alarm && <SafetyOverlay onExit={onExit} />}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: "20px 18px 8px", paddingTop: "max(20px, env(safe-area-inset-top))", overflowY: "auto" }}>
 
         {/* header */}
@@ -199,17 +196,15 @@ export default function WorkoutMode({ session: rawSession, block, onExit }) {
         </div>
       </div>
 
-      {/* footer fisso: azione principale + sicurezza clinica, sempre sotto il pollice */}
-      <div style={{ flexShrink: 0, padding: "10px 18px", paddingBottom: "max(14px, env(safe-area-inset-bottom))", background: "linear-gradient(180deg, rgba(0,0,0,0) 0%, #000 30%)" }}>
-        {phase === "exercise" && (isReviewing
-          ? <button style={{ ...S.btnGrad(g), width: "100%", fontSize: 15, padding: "16px" }} onClick={goToCurrent}>→ Torna all'esercizio attuale</button>
-          : <button style={{ ...S.btnGrad(g), width: "100%", fontSize: 16, padding: "17px" }} onClick={completeSet}>✓  Set completato — recupero {ex.rest}''</button>
-        )}
-        <button onClick={() => setAlarm(true)} style={{ ...S.btnGhost, width: "100%", marginTop: 10, padding: "11px 16px", fontSize: 13, minHeight: 44,
-          background: "rgba(255,77,77,.08)", borderColor: "rgba(255,77,77,.3)", color: "#ff6b6b" }}>
-          ⚠️ Sintomi al braccio dx
-        </button>
-      </div>
+      {/* footer fisso: azione principale sempre sotto il pollice */}
+      {phase === "exercise" && (
+        <div style={{ flexShrink: 0, padding: "10px 18px", paddingBottom: "max(14px, env(safe-area-inset-bottom))", background: "linear-gradient(180deg, rgba(0,0,0,0) 0%, #000 30%)" }}>
+          {isReviewing
+            ? <button style={{ ...S.btnGrad(g), width: "100%", fontSize: 15, padding: "16px" }} onClick={goToCurrent}>→ Torna all'esercizio attuale</button>
+            : <button style={{ ...S.btnGrad(g), width: "100%", fontSize: 16, padding: "17px" }} onClick={completeSet}>✓  Set completato — recupero {ex.rest}''</button>
+          }
+        </div>
+      )}
     </div>
   );
 }
