@@ -2,7 +2,18 @@ import { useState } from "react";
 import RestTimer from "./RestTimer.jsx";
 import SafetyOverlay from "./SafetyOverlay.jsx";
 import useWeightLog, { fmtDate } from "../hooks/useWeightLog.js";
+import useWorkingWeights from "../hooks/useWorkingWeights.js";
+import { suggestedMax, stepFor, clampWeight, fmtWeight } from "../lib/weights.js";
 import { S, T1, T2, T3, T4, INK, grad, color0 } from "../styles.js";
+
+const stepBtn = {
+  width: 60, height: 60, borderRadius: 20, flexShrink: 0,
+  border: "1px solid rgba(255,255,255,.18)", cursor: "pointer",
+  background: "linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.07))",
+  boxShadow: "inset 0 1px 0 rgba(255,255,255,.26), 0 6px 18px rgba(0,0,0,.45)",
+  color: "#f4f6f8", fontSize: 30, fontWeight: 700, lineHeight: 1,
+  fontFamily: "system-ui,sans-serif", display: "flex", alignItems: "center", justifyContent: "center",
+};
 
 export default function WorkoutMode({ session: rawSession, block, onExit }) {
   const isDeload = block?.label === "Deload";
@@ -16,18 +27,27 @@ export default function WorkoutMode({ session: rawSession, block, onExit }) {
   const [phase, setPhase] = useState("exercise");
   const [alarm, setAlarm] = useState(false);
   const ex = session.exercises[exIdx];
-
-  // Registro carichi: snapshot all'avvio (per "Ultima volta" e precompilazione),
-  // scrittura ad ogni set completato.
-  const wlog = useWeightLog();
-  const [history] = useState(() => ({ ...wlog.last }));
-  const [weights, setWeights] = useState({});
-  const lastFor = (i) => history[`${session.id}:${i}:${session.exercises[i].altUsed ? "alt" : "main"}`] || null;
-  const weightValue = weights[exIdx] ?? (lastFor(exIdx)?.weight ?? "");
-  const setWeightValue = (v) => setWeights((p) => ({ ...p, [exIdx]: v }));
-  const last = lastFor(exIdx);
   const curSets = setsDone[exIdx] || 0;
   const isReviewing = exIdx < furthest;
+
+  // Registro storico: snapshot all'avvio (per "Ultima volta"), scrittura a set completato.
+  const wlog = useWeightLog();
+  const [history] = useState(() => ({ ...wlog.last }));
+  // Peso di lavoro: salvato subito a ogni tocco di + / −, così non si perde
+  // uscendo dalla sessione o ricaricando l'app prima di completare il set.
+  const working = useWorkingWeights();
+  const keyOf = (i) => `${session.id}:${i}:${session.exercises[i].altUsed ? "alt" : "main"}`;
+  const exKey = keyOf(exIdx);
+  const last = history[exKey] || null;
+  const step = stepFor(ex.weight);
+  // Partenza: il peso già in uso, altrimenti l'ultimo registrato,
+  // altrimenti il valore più alto consigliato nella scheda.
+  const stored = working.get(exKey);
+  const weightValue = stored ?? last?.weight ?? suggestedMax(ex.weight);
+  const bump = (delta) => {
+    if (isReviewing) return;
+    working.set(exKey, clampWeight(weightValue + delta, ex.weight));
+  };
   const g = grad(session);
   const totalSets = session.exercises.reduce((a, e) => a + e.sets, 0);
   const doneSets = Object.values(setsDone).reduce((a, b) => a + b, 0);
@@ -37,10 +57,7 @@ export default function WorkoutMode({ session: rawSession, block, onExit }) {
     if (isReviewing) return;
     const next = curSets + 1;
     setSetsDone((p) => ({ ...p, [exIdx]: next }));
-    const w = parseFloat(String(weightValue).replace(",", "."));
-    if (!Number.isNaN(w)) {
-      wlog.save({ sessionId: session.id, exIdx, altUsed: !!ex.altUsed, name: ex.name, week: block?.week ?? null, date: new Date().toISOString(), weight: w, sets: next });
-    }
+    wlog.save({ sessionId: session.id, exIdx, altUsed: !!ex.altUsed, name: ex.name, week: block?.week ?? null, date: new Date().toISOString(), weight: weightValue, sets: next });
     if (next >= ex.sets && exIdx === session.exercises.length - 1) setPhase("done");
     else setPhase("rest");
   };
@@ -140,15 +157,22 @@ export default function WorkoutMode({ session: rawSession, block, onExit }) {
                   </div>
                 )}
 
-                {/* registro carichi */}
-                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16, marginTop: ex.weight ? -6 : 0 }}>
-                  <label htmlFor="peso-usato" style={{ fontSize: 12, color: T3, flex: 1 }}>
-                    Peso usato (kg)
-                    {last && <div style={{ fontSize: 11, color: T4, marginTop: 2 }}>Ultima volta: {last.weight} kg · {fmtDate(last.date)}</div>}
-                  </label>
-                  <input id="peso-usato" type="number" inputMode="decimal" step="0.5" min="0" placeholder="—"
-                    value={weightValue} onChange={(e) => setWeightValue(e.target.value)} disabled={isReviewing}
-                    style={{ ...S.input, width: 96, color: color0(session) }} />
+                {/* peso usato: stepper + / − */}
+                <div style={{ marginBottom: 16, marginTop: ex.weight ? -6 : 0 }}>
+                  <div style={{ fontSize: 10, color: T4, textTransform: "uppercase", letterSpacing: ".05em", marginBottom: 7 }}>Peso usato</div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                    <button type="button" aria-label={`Togli ${step} kg`} onClick={() => bump(-step)} disabled={isReviewing}
+                      style={{ ...stepBtn, opacity: isReviewing ? .35 : 1 }}>−</button>
+                    <div style={{ flex: 1, textAlign: "center", minWidth: 0 }}>
+                      <div style={{ fontSize: 30, fontWeight: 800, color: color0(session), lineHeight: 1.05 }}>
+                        {fmtWeight(weightValue)}<span style={{ fontSize: 14, fontWeight: 700, marginLeft: 3, color: T3 }}>kg</span>
+                      </div>
+                      <div style={{ fontSize: 10, color: T4, marginTop: 2 }}>passo {fmtWeight(step)} kg</div>
+                    </div>
+                    <button type="button" aria-label={`Aggiungi ${step} kg`} onClick={() => bump(step)} disabled={isReviewing}
+                      style={{ ...stepBtn, opacity: isReviewing ? .35 : 1 }}>+</button>
+                  </div>
+                  {last && <div style={{ fontSize: 11, color: T4, marginTop: 8, textAlign: "center" }}>Ultima volta: {fmtWeight(last.weight)} kg · {fmtDate(last.date)}</div>}
                 </div>
 
                 {/* set progress dots */}

@@ -69,7 +69,9 @@ src/
     useTimer.js              timer basato su timestamp (corretto anche dopo il background)
     usePersistedState.js     useState + localStorage
     useAltChoices.js         scelta alternativa per sessione + esercizio
-    useWeightLog.js          registro carichi: ultimo valore + storico per giorno
+    useWeightLog.js          registro storico: ultimo valore + storico per giorno
+    useWorkingWeights.js     peso di lavoro corrente, salvato a ogni modifica
+  lib/weights.js             lettura dei pesi consigliati (range, passo, valori negativi)
   styles.js                  oggetto S (glassmorphism chiaro) e colori
 public/
   manifest.webmanifest, sw.js
@@ -85,7 +87,7 @@ reference/SaniFit_rev4.jsx     versione precedente, riferimento visivo e funzion
 - **Alternative** (`alt`): ogni esercizio non terapeutico può essere sostituito con la sua variante equivalente; la scelta è persistita e vale anche nella sessione guidata. I face pull 🛡 non hanno alternativa.
 - **Blocco di 8 settimane** (`BLOCK`): card in Home con settimana, fase e RIR target, avanzamento manuale con ‹ ›. Nella sessione guidata il RIR compare nella pill del tag; alla settimana 7 (Deload) le serie sono dimezzate con un avviso.
 - **Focus e tempo**: muscolo target sotto il nome dell'esercizio e cadenza "⏱ tempo 3-1-1" (eccentrica-pausa-concentrica, secondi).
-- **Registro carichi**: campo "Peso usato (kg)" precompilato con l'ultimo valore; salvataggio a ogni set; "Ultima volta: X kg · gg/mm".
+- **Registro carichi**: il peso si regola con i pulsanti − e +, senza tastiera. Parte dal peso già in uso, altrimenti dall'ultimo registrato, altrimenti dal valore più alto consigliato nella scheda. Il passo segue la progressione del programma: 2.5 kg su macchine e cavi, 2 kg per manubrio. Ogni modifica è salvata subito, il completamento del set scrive anche la voce nello storico.
 - **Progressi** (tab 📈): per ogni esercizio allenato mostra ultimo carico, variazione rispetto alla volta precedente, massimo e numero di sessioni. Riepilogo con allenamenti registrati e data dell'ultimo.
 - **Sicurezza clinica**: bottone "⚠️ Sintomi al braccio dx" sempre visibile nella sessione guidata; apre un overlay che si chiude solo uscendo dalla sessione.
 - Timer di recupero basato su timestamp: continua a contare correttamente se l'app va in background.
