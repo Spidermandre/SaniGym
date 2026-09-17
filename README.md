@@ -61,7 +61,7 @@ src/
     Sessions.jsx             lista delle 4 sessioni
     SessionDetail.jsx        dettaglio con alternative (↔ Alternativa / ↩ Originale)
     WorkoutMode.jsx          sessione guidata (set, recupero, registro carichi, deload, sicurezza)
-    RestTimer.jsx            timer circolare di recupero
+    RestTimer.jsx            timer circolare di recupero, parte da solo
     Progress.jsx             progressi: ultimo carico, variazione, massimo per esercizio
     Mobility.jsx             checklist Pre / Post / Riposo
   hooks/

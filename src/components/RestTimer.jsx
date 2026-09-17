@@ -5,6 +5,8 @@ import { S, T1, T4 } from "../styles.js";
 export default function RestTimer({ seconds, onDone }) {
   const { time, running, start, reset, done } = useTimer(seconds);
   const r = 40, circ = 2 * Math.PI * r, offset = circ * (1 - time / seconds), hot = time <= 10;
+  // Il recupero parte da solo: in palestra il set finisce quando premi il pulsante.
+  useEffect(() => { start(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (done && onDone) onDone(); }, [done]); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
@@ -22,9 +24,9 @@ export default function RestTimer({ seconds, onDone }) {
         </div>
       </div>
       <div style={{ display: "flex", gap: 8 }}>
-        {!running
-          ? <button onClick={() => start()} style={S.btnGreen}>▶ Avvia recupero</button>
-          : <button onClick={() => reset()} style={S.btnGhost}>✕ Reset</button>}
+        {running
+          ? <button onClick={() => reset()} style={S.btnGhost}>↺ Ricomincia</button>
+          : <button onClick={() => start()} style={S.btnGreen}>▶ Riavvia recupero</button>}
       </div>
     </div>
   );

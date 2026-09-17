@@ -1,5 +1,5 @@
 // Service worker minimale: cache dell'app shell per uso offline.
-const CACHE = "sanifit-v5-5";
+const CACHE = "sanifit-v5-6";
 const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./icon.svg", "./apple-touch-icon.png", "./icon-192.png", "./icon-512.png", "./icon-maskable-512.png"];
 
 self.addEventListener("install", (e) => {

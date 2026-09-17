@@ -201,7 +201,7 @@ export default function WorkoutMode({ session: rawSession, block, onExit }) {
         <div style={{ flexShrink: 0, padding: "10px 18px", paddingBottom: "max(14px, env(safe-area-inset-bottom))", background: "linear-gradient(180deg, rgba(0,0,0,0) 0%, #000 30%)" }}>
           {isReviewing
             ? <button style={{ ...S.btnGrad(g), width: "100%", fontSize: 15, padding: "16px" }} onClick={goToCurrent}>→ Torna all'esercizio attuale</button>
-            : <button style={{ ...S.btnGrad(g), width: "100%", fontSize: 16, padding: "17px" }} onClick={completeSet}>✓  Set completato — recupero {ex.rest}''</button>
+            : <button style={{ ...S.btnGrad(g), width: "100%", fontSize: 16, padding: "17px" }} onClick={completeSet}>✓  Set completato</button>
           }
         </div>
       )}
