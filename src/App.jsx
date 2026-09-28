@@ -5,38 +5,38 @@ import SessionDetail from "./components/SessionDetail.jsx";
 import WorkoutMode from "./components/WorkoutMode.jsx";
 import Mobility from "./components/Mobility.jsx";
 import Progress from "./components/Progress.jsx";
+import Icon from "./components/Icon.jsx";
 import useAltChoices from "./hooks/useAltChoices.js";
 import usePersistedState from "./hooks/usePersistedState.js";
 import { BLOCK } from "./data/programma.js";
-import { BG, T1, T4 } from "./styles.js";
+import { BG, BG_GRADIENT, T1, T4, TIFFANY, tint } from "./styles.js";
 
 const NAV = [
-  { key: "home", icon: "🏠", label: "Home" },
-  { key: "sessions", icon: "💪", label: "Sessioni" },
-  { key: "progress", icon: "📈", label: "Progressi" },
-  { key: "mobility", icon: "🧘", label: "Mobilità" },
+  { key: "home", icon: "home", label: "Home" },
+  { key: "sessions", icon: "sessions", label: "Sessioni" },
+  { key: "progress", icon: "progress", label: "Progressi" },
+  { key: "mobility", icon: "mobility", label: "Mobilità" },
 ];
 
-// Nero con aloni fluo molto tenui nei colori delle sessioni.
+// Navy profondo con aloni tiffany molto tenui.
 const bg = {
   position: "fixed", inset: 0, zIndex: 0,
   background: `
-    radial-gradient(ellipse 80% 55% at 10% 0%,  rgba(198,255,77,.10) 0%, transparent 55%),
-    radial-gradient(ellipse 65% 50% at 90% 90%, rgba(79,245,226,.10) 0%, transparent 50%),
-    radial-gradient(ellipse 55% 45% at 60% 35%, rgba(92,225,255,.06) 0%, transparent 48%),
-    ${BG}`,
+    radial-gradient(ellipse 85% 55% at 12% 0%,  rgba(129,216,208,.14) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 50% at 92% 96%, rgba(10,186,181,.12) 0%, transparent 55%),
+    ${BG_GRADIENT}`,
 };
 
-// "Liquid glass": vetro scuro, bordo luminoso sottile, riflesso in alto.
+// "Liquid glass" su navy: vetro tinto di tiffany, bordo luminoso, riflesso in alto.
 const navBar = {
   position: "fixed", bottom: "max(20px, env(safe-area-inset-bottom))", left: "50%", transform: "translateX(-50%)",
   display: "flex", gap: 3, padding: 6, zIndex: 90,
-  background: "linear-gradient(180deg, rgba(255,255,255,.14) 0%, rgba(255,255,255,.06) 100%)",
+  background: `linear-gradient(180deg, ${tint(0.16)} 0%, rgba(255,255,255,.05) 100%)`,
   backdropFilter: "blur(36px) saturate(200%)",
   WebkitBackdropFilter: "blur(36px) saturate(200%)",
-  border: "1px solid rgba(255,255,255,.18)",
+  border: `1px solid ${tint(0.28)}`,
   borderRadius: 28,
-  boxShadow: "0 12px 40px rgba(0,0,0,.65), inset 0 1px 0 rgba(255,255,255,.28), inset 0 -1px 0 rgba(255,255,255,.06)",
+  boxShadow: "0 14px 40px rgba(2,8,23,.6), inset 0 1px 0 rgba(255,255,255,.22), inset 0 -1px 0 rgba(255,255,255,.05)",
   maxWidth: "calc(100vw - 24px)",
 };
 
@@ -65,27 +65,28 @@ export default function App() {
           {nav === "mobility" && <Mobility />}
 
           {/* bottom nav */}
-          <div style={navBar}>
+          <nav style={navBar} aria-label="Navigazione principale">
             {NAV.map((item) => {
               const active = activeNav === item.key;
               return (
                 <button key={item.key}
+                  aria-current={active ? "page" : undefined}
                   onClick={() => { setNav(item.key); if (item.key !== "sessions") setSel(null); }}
                   style={{
-                    display: "flex", flexDirection: "column", alignItems: "center", gap: 2,
-                    padding: "9px 10px", borderRadius: 22, cursor: "pointer", minHeight: 44,
-                    border: active ? "1px solid rgba(255,255,255,.22)" : "1px solid transparent",
-                    background: active ? "linear-gradient(180deg, rgba(255,255,255,.20), rgba(255,255,255,.10))" : "transparent",
-                    boxShadow: active ? "inset 0 1px 0 rgba(255,255,255,.3), 0 4px 14px rgba(0,0,0,.35)" : "none",
-                    color: active ? T1 : T4,
+                    display: "flex", flexDirection: "column", alignItems: "center", gap: 3,
+                    padding: "8px 10px", borderRadius: 22, cursor: "pointer", minHeight: 44,
+                    border: active ? `1px solid ${tint(0.38)}` : "1px solid transparent",
+                    background: active ? `linear-gradient(180deg, ${tint(0.26)}, ${tint(0.1)})` : "transparent",
+                    boxShadow: active ? "inset 0 1px 0 rgba(255,255,255,.25), 0 4px 14px rgba(2,8,23,.35)" : "none",
+                    color: active ? TIFFANY : T4,
                     fontSize: 10, fontWeight: active ? 700 : 500, fontFamily: "system-ui,sans-serif", minWidth: 60,
                   }}>
-                  <span style={{ fontSize: 20, filter: active ? "none" : "grayscale(.6) opacity(.75)" }}>{item.icon}</span>
+                  <Icon name={item.icon} size={22} stroke={active ? 2.1 : 1.8} />
                   {item.label}
                 </button>
               );
             })}
-          </div>
+          </nav>
         </div>
       )}
     </div>

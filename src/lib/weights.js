@@ -31,7 +31,18 @@ export function stepFor(text) {
 
 export const roundWeight = (n) => Math.round(n * 10) / 10;
 
-export const clampWeight = (n, text) => Math.min(400, Math.max(minWeight(text), roundWeight(n)));
+// Sulle macchine assistite il carico è un'assistenza (negativa): arriva al massimo a 0,
+// cioè esercizio a corpo libero. Altrove il tetto è solo una protezione.
+export function maxWeight(text) {
+  return parseWeights(text).some((n) => n < 0) ? 0 : 400;
+}
 
-export const fmtWeight = (n) =>
-  n == null || Number.isNaN(n) ? "—" : (Number.isInteger(n) ? String(n) : n.toFixed(1).replace(/\.0$/, ""));
+export const clampWeight = (n, text) => Math.min(maxWeight(text), Math.max(minWeight(text), roundWeight(n)));
+
+// Numero pulito, con il segno meno tipografico (−) come nella scheda.
+export const fmtWeight = (n) => {
+  if (n == null || Number.isNaN(n)) return "—";
+  const abs = Math.abs(n);
+  const s = Number.isInteger(abs) ? String(abs) : abs.toFixed(1).replace(/\.0$/, "");
+  return n < 0 ? `\u2212${s}` : s;
+};

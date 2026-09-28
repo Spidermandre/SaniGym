@@ -1,19 +1,35 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="SG">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="SaniFit">
   <defs>
-    <linearGradient id="sg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#1e46ff"/>
-      <stop offset=".45" stop-color="#2f7bff"/>
-      <stop offset="1" stop-color="#5ce1ff"/>
-    </linearGradient>
+    <radialGradient id="navy" cx="50%" cy="30%" r="80%">
+      <stop offset="0" stop-color="#16407a"/>
+      <stop offset=".55" stop-color="#0d2449"/>
+      <stop offset="1" stop-color="#081733"/>
+    </radialGradient>
     <linearGradient id="gloss" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#ffffff" stop-opacity=".22"/>
-      <stop offset=".55" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".10"/>
+      <stop offset=".5" stop-color="#ffffff" stop-opacity="0"/>
     </linearGradient>
   </defs>
-  <rect width="512" height="512" rx="112" fill="url(#sg)"/>
+  <rect width="512" height="512" rx="112" fill="url(#navy)"/>
   <rect width="512" height="512" rx="112" fill="url(#gloss)"/>
-  <text x="256" y="262" fill="#ffffff"
-        font-family="Liberation Sans, Helvetica Neue, Helvetica, Arial, sans-serif"
-        font-size="236" font-weight="700" letter-spacing="-10"
-        text-anchor="middle" dominant-baseline="central">SG</text>
+  <g transform="translate(256 256) scale(0.92) translate(-256 -282)">
+  <g fill="#81d8d0" stroke="#81d8d0" stroke-linecap="round" stroke-linejoin="round">
+    <!-- bilanciere -->
+    <line x1="80" y1="150" x2="432" y2="150" stroke-width="18"/>
+    <rect x="94"  y="98"  width="34" height="104" rx="11" stroke="none"/>
+    <rect x="132" y="116" width="22" height="68"  rx="8"  stroke="none"/>
+    <rect x="384" y="98"  width="34" height="104" rx="11" stroke="none"/>
+    <rect x="358" y="116" width="22" height="68"  rx="8"  stroke="none"/>
+    <!-- braccia tese verso l'alto -->
+    <line x1="220" y1="268" x2="198" y2="154" stroke-width="26" fill="none"/>
+    <line x1="292" y1="268" x2="314" y2="154" stroke-width="26" fill="none"/>
+    <!-- testa -->
+    <circle cx="256" cy="212" r="31" stroke="none"/>
+    <!-- busto -->
+    <path d="M206 262 H306 L282 356 H230 Z" stroke-width="14"/>
+    <!-- gambe, leggera flessione -->
+    <polyline points="240,352 208,400 198,452" stroke-width="28" fill="none"/>
+    <polyline points="272,352 304,400 314,452" stroke-width="28" fill="none"/>
+  </g>
+  </g>
 </svg>

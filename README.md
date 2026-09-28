@@ -16,9 +16,10 @@ npm run preview  # serve la build di produzione in locale
 Stack: Vite + React 18, JavaScript, nessuna libreria UI, nessun backend.
 Persistenza in `localStorage` (alternative scelte, settimana del blocco, registro carichi con storico).
 
-Tema scuro: sfondo nero, un colore fluo per sessione (Push A verde chiaro, Push B verde scuro,
-Pull A celeste, Pull B tiffany), navigazione e card in stile *liquid glass*. I colori sono in
-`src/styles.js` (`THEME`) e non toccano i dati della scheda.
+Tema navy + tiffany: sfondo blu navy, pulsanti, titoli e valori color tiffany (#81d8d0),
+card e navigazione in stile *liquid glass*. Ogni tipologia di allenamento ha la sua icona:
+spinta (Push), trazione (Pull), riposo attivo, riposo completo, mobilità pre e post.
+Colori in `src/styles.js`, icone in `src/components/Icon.jsx`. I dati della scheda non cambiano.
 
 ## Indirizzo online
 
@@ -64,6 +65,7 @@ src/
     RestTimer.jsx            timer circolare di recupero, parte da solo
     Progress.jsx             progressi: ultimo carico, variazione, massimo per esercizio
     Mobility.jsx             checklist Pre / Post / Riposo
+    Icon.jsx                 icone SVG lineari (tipologie di allenamento e interfaccia)
   hooks/
     useTimer.js              timer basato su timestamp (corretto anche dopo il background)
     usePersistedState.js     useState + localStorage
@@ -75,8 +77,8 @@ src/
 public/
   manifest.webmanifest, sw.js
   icon.svg · apple-touch-icon.png (180) · icon-192.png · icon-512.png · icon-maskable-512.png
-  Icona: logogramma "SG" bianco su gradiente blu fluo → celeste fluo.
-  I PNG si rigenerano con lo script in scratchpad (Chromium + public/icon.svg come riferimento).
+  Icona: atleta stilizzato che solleva un bilanciere, tiffany su navy.
+  Sorgente in scripts/icon-gen.py (genera gli SVG), PNG con scripts/icon-render.mjs (Chromium/Playwright).
 docs/RAZIONALE_SCIENTIFICO.md  perché la scheda è fatta così
 reference/SaniFit_rev4.jsx     versione precedente, riferimento visivo e funzionale
 ```
@@ -86,7 +88,7 @@ reference/SaniFit_rev4.jsx     versione precedente, riferimento visivo e funzion
 - **Alternative** (`alt`): ogni esercizio non terapeutico può essere sostituito con la sua variante equivalente; la scelta è persistita e vale anche nella sessione guidata. I face pull 🛡 non hanno alternativa.
 - **Blocco di 8 settimane** (`BLOCK`): card in Home con settimana, fase e RIR target, avanzamento manuale con ‹ ›. Nella sessione guidata il RIR compare nella pill del tag; alla settimana 7 (Deload) le serie sono dimezzate con un avviso.
 - **Focus e tempo**: muscolo target sotto il nome dell'esercizio e cadenza "⏱ tempo 3-1-1" (eccentrica-pausa-concentrica, secondi).
-- **Registro carichi**: il peso si regola con i pulsanti − e +, senza tastiera. Parte dal peso già in uso, altrimenti dall'ultimo registrato, altrimenti dal valore più alto consigliato nella scheda. Il passo segue la progressione del programma: 2.5 kg su macchine e cavi, 2 kg per manubrio. Ogni modifica è salvata subito, il completamento del set scrive anche la voce nello storico.
+- **Registro carichi**: il peso si regola con i pulsanti − e +, senza tastiera, più una regolazione fine da ±0.5 kg valida per ogni esercizio. Sulla dip machine assistita il valore è un'assistenza negativa e si ferma a 0 (corpo libero). Parte dal peso già in uso, altrimenti dall'ultimo registrato, altrimenti dal valore più alto consigliato nella scheda. Il passo segue la progressione del programma: 2.5 kg su macchine e cavi, 2 kg per manubrio. Ogni modifica è salvata subito, il completamento del set scrive anche la voce nello storico.
 - **Progressi** (tab 📈): per ogni esercizio allenato mostra ultimo carico, variazione rispetto alla volta precedente, massimo e numero di sessioni. Riepilogo con allenamenti registrati e data dell'ultimo.
 - Timer di recupero basato su timestamp: continua a contare correttamente se l'app va in background.
 
