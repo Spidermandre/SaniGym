@@ -98,7 +98,8 @@ src/
 public/
   manifest.webmanifest, sw.js
   icon.svg · apple-touch-icon.png (180) · icon-192.png · icon-512.png · icon-maskable-512.png
-  Icona: atleta stilizzato che solleva un bilanciere, arancione fluo su grigio scuro.
+  Icona: atleta con bilanciere sopra la testa, tratto lineare arrotondato come le icone dell'app,
+  gradiente arancione fluo con bagliore su lastra grafite.
   Sorgente in scripts/icon-gen.py (genera gli SVG), PNG con scripts/icon-render.mjs (Chromium/Playwright).
 docs/RAZIONALE_SCIENTIFICO.md  perché la scheda è fatta così
 reference/SaniFit_rev4.jsx     versione precedente, riferimento visivo e funzionale
