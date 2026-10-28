@@ -13,9 +13,11 @@ export function parseWeights(text) {
 }
 
 // Punto di partenza: il valore più alto indicato per l'esercizio.
+// Senza numeri: "corpo libero" parte da 0, "da calibrare" da un valore neutro.
 export function suggestedMax(text, fallback = 20) {
   const nums = parseWeights(text);
-  return nums.length ? Math.max(...nums) : fallback;
+  if (nums.length) return Math.max(...nums);
+  return /corpo libero/i.test(String(text || "")) ? 0 : fallback;
 }
 
 // I carichi negativi esistono solo per le macchine assistite ("−15 kg assist"):

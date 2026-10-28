@@ -1,5 +1,7 @@
+import { sessionKind } from "../lib/program.js";
+
 // Icone lineari 24×24, tratto arrotondato, colore ereditato (currentColor).
-// Tipologie di allenamento: push, pull, rest (riposo attivo), off (riposo completo),
+// Tipologie di allenamento: push, pull, legs, rest (riposo attivo), off (riposo completo),
 // warmup (mobilità pre), stretch (mobilità post). Il resto è interfaccia.
 
 const PATHS = {
@@ -18,6 +20,15 @@ const PATHS = {
       <path d="M4 5l1.6 2.6M20 5l-1.6 2.6" />
       <path d="M12 8.5v8M9 13.5l3 3 3-3" />
       <path d="M7.5 20.5h9" />
+    </>
+  ),
+  // Gambe: squat visto di fronte, bilanciere sulle spalle e ginocchia piegate.
+  legs: (
+    <>
+      <circle cx="12" cy="4.2" r="1.9" />
+      <path d="M5 7h14M3.6 5.6v2.8M20.4 5.6v2.8" />
+      <path d="M12 6.4v5.6" />
+      <path d="M12 12l-3.8 2.6.8 5M12 12l3.8 2.6-.8 5" />
     </>
   ),
   rest: (
@@ -141,6 +152,21 @@ const PATHS = {
       <path d="M12 10v4.4M12 17.1v.1" />
     </>
   ),
+  // Asimmetria destra/sinistra: bilancia con piatti a quote diverse.
+  balance: (
+    <>
+      <path d="M12 4v16M8 20h8" />
+      <path d="M5 8.5 19 6" />
+      <path d="M5 8.5 2.8 13.5h4.4Z" />
+      <path d="M19 6l-2.2 5h4.4Z" />
+    </>
+  ),
+  shield: (
+    <>
+      <path d="M12 3.5 19 6v5.5c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6Z" />
+      <path d="M9 12l2.2 2.2L15.5 10" />
+    </>
+  ),
   trophy: (
     <>
       <path d="M8 4h8v5.2a4 4 0 0 1-8 0Z" />
@@ -170,6 +196,7 @@ export default function Icon({ name, size = 22, stroke = 1.9, style, title }) {
   );
 }
 
-// Icona per una voce della settimana o una sessione.
-export const iconForSession = (s) => (String(s?.id || "").startsWith("pull") ? "pull" : "push");
-export const iconForDay = (sid) => (sid === "rest" ? "rest" : sid ? iconForSession({ id: sid }) : "off");
+// Icona per una voce della settimana o una sessione:
+// Upper A/C (petto + bicipiti) → push, Upper B (dorso) → pull, Gambe → legs.
+export const iconForSession = (s) => sessionKind(s);
+export const iconForDay = (sid) => (sid === "rest" ? "rest" : sid ? sessionKind({ id: sid }) : "off");

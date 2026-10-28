@@ -1,65 +1,83 @@
-# SaniFit Rev. 5 — Razionale scientifico
+# SaniFit Rev. 6 — Razionale
 
-Riferimento: uomo 41 anni, 178 cm, 73 kg, longilineo, esperienza avanzata, obiettivo ipertrofia, 4 sessioni/settimana, vincoli clinici su cervicale/trapezio dx, nervo mediano dx e gomito dx, intensità 60-70 % 1RM (prescrizione del fisiatra). La scheda è upper body come in Rev. 4: il vincolo resta invariato.
+Soggetto: uomo 41 anni, 178 cm, 73 kg, longilineo, avanzato. 4 sedute da 60 minuti, lunedì · mercoledì · giovedì · venerdì. Obiettivo ipertrofia, priorità petto e bicipiti. Macchine e cavi. Vincoli clinici del fisiatra su trapezio superiore destro, plesso cervicale, nervo mediano destro e gomito destro; intensità 60-70 % 1RM.
 
-## 1. Perché cambiare gli esercizi (e perché non cambiarli troppo)
-
-- **Ipertrofia = tensione meccanica su fibre reclutate, ripetuta nel tempo.** L'esercizio in sé conta meno di sovraccarico progressivo, prossimità al cedimento e volume. Cambiare esercizio non crea "shock muscolare": crea però uno stimolo su porzioni e lunghezze muscolari leggermente diverse, e soprattutto ripristina la motivazione. Dopo 4 revisioni sugli stessi pattern la varietà ha un valore reale sull'aderenza, che è il primo predittore di risultato.
-- **Rotazione ogni 8 settimane, non ogni settimana.** Un esercizio nuovo richiede 2-3 settimane di apprendimento motorio prima che il carico rifletta la forza reale. Cambiare troppo spesso azzera la doppia progressione. Da qui il blocco da 8 settimane e il campo `alt` in app: puoi variare *un* esercizio quando sei stanco di farlo, senza rifare tutta la scheda.
-- **Stessi pattern, esecuzione diversa.** Ogni esercizio Rev. 5 è la variante di uno Rev. 4: cambia angolo, presa, macchina-vs-manubri, unilaterale-vs-bilaterale. La componente psicologica è soddisfatta senza perdere i vincoli clinici.
-
-## 2. Volume, intensità, frequenza
-
-- **Volume:** 10-20 serie dirette/settimana per gruppo è il range con miglior rapporto dose-risposta per un soggetto esperto. Rev. 5: petto 20, dorsali 18, schiena alta 16, deltoide laterale 6 (nuovo, partenza prudente per il trapezio dx), tricipiti 6 dirette + molte indirette, bicipiti 8 dirette + molte indirette. Frequenza 2×/settimana per gruppo, che con questo volume è più efficiente di 1×.
-- **Intensità:** il vincolo del 60-70 % 1RM sposta il lavoro in range 8-15 rip. La letteratura mostra ipertrofia equivalente tra 6 e 30 rip **a parità di prossimità al cedimento**: quindi il carico basso non è un limite, è il RIR che conta. Per questo ogni settimana del blocco ha un RIR target (3 → 1) e non un carico target.
-- **Serie A/B (Volume/Intensità):** la sessione A lavora 4×8-12 con recuperi 90-120'', la sessione B 4×8-10 con recuperi 150'' sui compound. Recuperi lunghi sui multiarticolari producono più ipertrofia dei recuperi brevi perché preservano le rip nelle serie successive. Sull'isolamento bastano 60''.
-
-## 3. Enfasi sulla posizione allungata
-
-Le evidenze più recenti (2021-2024) indicano che allenare un muscolo con enfasi sulla porzione allungata del ROM produce ipertrofia pari o superiore alla porzione accorciata. Applicazione in Rev. 5:
-
-| Muscolo | Esercizio | Come |
-|---|---|---|
-| Petto | Cavo croce a puleggia media | pausa 2'' in apertura |
-| Tricipite (capo lungo) | Overhead extension al cavo | gomito sopra la testa → capo lungo allungato |
-| Bicipite | Incline hammer curl 45° | braccio dietro il busto |
-| Dorsale | Pulldown unilaterale, straight-arm pulldown | pausa 2'' con scapola elevata |
-
-Il campo `tempo` (es. "3-2-1" = 3'' eccentrica, 2'' pausa in allungamento, 1'' concentrica) rende esplicito questo lavoro. Eccentrica controllata ≥2'' aumenta la tensione per rip e, per il soggetto, riduce i picchi di carico articolare.
-
-## 4. Cosa è stato aggiunto e perché
-
-- **Deltoide laterale** (alzate al cavo + lateral raise machine): assente in Rev. 4. Il deltoide laterale ha un impatto estetico grande sulla silhouette di un longilineo e non lavora a sufficienza nelle spinte. Carichi bassi, spalla depressa: se il trapezio superiore dx compensa, il carico è troppo alto.
-- **Overhead triceps extension**: il pushdown allena il capo laterale/mediale, l'overhead il capo lungo in allungamento. Insieme coprono l'intero tricipite. Presa neutra sulla corda e ROM guidato dal gomito dx.
-- **Lavoro unilaterale** (pulldown a braccio singolo, rematore manubri): compensa asimmetrie dx/sx e permette al lato dx di lavorare al *suo* carico senza che il sx lo trascini.
-- **Serie di avvicinamento** nella mobilità pre: 2 serie leggere sul primo esercizio. Riduce rischio e migliora la prestazione delle serie di lavoro.
-- **Zona 2 nei giorni di riposo**: 20-30' leggeri. Migliora recupero e salute cardiovascolare a 41 anni senza interferire con l'ipertrofia.
-
-## 5. Cosa è stato tenuto e perché (vincoli clinici)
-
-- **Face pull 🛡 in ogni sessione**, 3 serie: rinforzo cuffia e deltoide posteriore, scarico del plesso cervicale. Nel Pull B è a metà sessione, prima dei bicipiti, per arrivare "aperto" agli ultimi esercizi.
-- **Nessun shrug, nessun overhead press pesante, nessuna trazione dietro la nuca**: tutti caricano il trapezio superiore e comprimono la cervicale.
-- **Prese neutre/prone a destra, zero supinazione sotto carico**: incline hammer curl, cross-body hammer, asimmetria dx/sx sul curl al cavo.
-- **Pettorale con ROM guidato o manubri neutri**: gomito dx mai oltre 90° in spinta.
-- **Protocollo di mobilità pre/post/riposo invariato**: è un protocollo clinico, non un'opinione di allenamento.
-
-## 6. Progressione
-
-1. **Doppia progressione:** range di rip fisso. Quando raggiungi il tetto in *tutte* le serie con ≥2 rip in riserva, +2.5 kg (macchine/cavi) o +2 kg per manubrio. Se le rip crollano sotto il minimo, torna al carico precedente.
-2. **RIR settimanale:** 3 → 2 → 2 → 1.5 → 1 → 1 → deload (4) → rotazione.
-3. **Deload alla settimana 7**: metà delle serie, stessi carichi. A 41 anni la gestione della fatica sistemica è ciò che permette di continuare a progredire per anni; saltare il deload è l'errore più comune degli esperti.
-4. **Settimana 8 = Rev. 6**: usa le alternative (`alt`) per costruire la nuova scheda e ricomincia il ciclo.
-
-## 7. Recupero (ciò che l'app non allena)
-
-- Proteine 1.6-2.2 g/kg/die (≈ 120-160 g), distribuite in 3-4 pasti.
-- Sonno 7-9 h: la sintesi proteica e il recupero nervoso avvengono lì; con un problema nervoso periferico, il sonno è terapia.
-- Calore sul trapezio dx pre-sessione e ogni sera se c'è tensione.
-- **Stop immediato con parestesie o formicolio al braccio/mano dx**, e segnalazione al fisiatra.
-
-## 8. Nota sugli arti inferiori
-
-La scheda è upper body per continuità con Rev. 4. Se il fisiatra non ha posto vincoli sulle gambe, l'aggiunta di 2 esercizi per gamba (leg press + leg curl, 3×10-12) alla fine di Push A e Pull B, oppure una quinta sessione, avrebbe un beneficio ormonale, posturale e metabolico rilevante a 41 anni. È una decisione da prendere con il medico, non l'ho inserita d'ufficio.
+Questa revisione nasce da una ricerca sulla letteratura 2022-2026 **sottoposta a revisione critica in contraddittorio**. La revisione ha ridimensionato parecchie conclusioni, e la scheda è costruita sulla versione sopravvissuta all'esame, non sulla prima.
 
 ---
-*Questo documento è un razionale di allenamento, non un parere medico. I vincoli clinici vengono dal fisiatra e prevalgono sempre.*
+
+## 1. Cosa ha retto all'esame critico e cosa no
+
+| Conclusione iniziale | Dopo il contraddittorio | Uso nella scheda |
+|---|---|---|
+| Volume 10-20 serie/sett., fino a 25-30 sui prioritari | Ordine di grandezza corretto, numeri sovra-precisi. I 25-30 estrapolano oltre i dati disponibili, e la fonte principale (Pelland) è un preprint | Petto **16**, bicipiti **13**: parte alta del range difendibile, non oltre |
+| "Tetto" di 11 serie per muscolo per seduta | **Frainteso**: è il punto oltre cui il beneficio non è più *distinguibile*, non una soglia di danno. Gli autori stessi avvertono che i dati ad alto volume sono scarsi | Nessun muscolo supera 7 serie per seduta: il problema non si pone |
+| Equivalenza 6-30 ripetizioni; 60-70 % 1RM efficace | **Regge**. È la conclusione più solida di tutta la ricerca | Lavoro a 10-15 ripetizioni, intensità del fisiatra rispettata |
+| RIR 0-3, con 0-1 sugli isolamenti | **Ristretto artificiosamente**: la fonte raccomanda 0-5. E il cedimento non è mai stato testato su soggetti con neuropatia periferica | **2-3 sui multiarticolari, 1-2 sugli isolamenti, mai 0. A destra mai sotto 2** |
+| Cadenza irrilevante tra 0,5 e 8 s | Regge come ordine di grandezza | Eccentrica 2-3 s, concentrica controllata |
+| Lengthened partials non superiori al ROM completo | Fragile: è assenza di prova, non prova di assenza (campione piccolo, 8 settimane, solo gomito) | La posizione allungata resta un **criterio di scelta degli esercizi**, non una tecnica da applicare |
+| Recuperi ≥60-90 s | Il limite inferiore difendibile solo sugli isolamenti; sui multiarticolari il dato forte indica 3 min | **150 s sui multiarticolari, 90 s sugli isolamenti, 60 s sui face pull** |
+| Superset: stessa ipertrofia, 50 % di tempo in meno | **Gonfiato**: il risparmio reale è 36-37 %, su 3 soli studi cronici, e con RPE e fatica significativamente più alti | Usati **solo** tra leg curl e leg extension. Mai push/pull |
+| Gambe 1x con 20-24 serie in 60 min | **Aritmeticamente impossibile** con recuperi adeguati | **17 serie in ~45 min** |
+| Potenziale ipertrofico quasi intatto a 41 anni | Plausibile ma poco studiato: quasi tutta la letteratura usa 18-40 anni | Accettato, con deload più frequenti per cautela |
+
+## 2. Le quattro decisioni che definiscono questa scheda
+
+**Nessuna serie a cedimento.** È la decisione più importante e va contro la lettura superficiale della letteratura. Il cedimento massimizza pressione intramuscolare, edema e stress tensile sulle strutture peri-nervose — esattamente dove il nervo mediano destro è già sensibilizzato. Nessuno studio sul cedimento ha incluso soggetti con neuropatia: applicare quelle conclusioni qui è un'estrapolazione indebita. Il costo è contenuto: la differenza tra 2 RIR e il cedimento è piccola per l'ipertrofia e grande per la fatica.
+
+Questo risolve anche la contraddizione apparente con la prescrizione del fisiatra. Il 60-70 % 1RM non limita l'ipertrofia — a parità di prossimità al cedimento i range di ripetizioni si equivalgono. Ma portare a cedimento al 65 % significa 15-20 ripetizioni sotto tensione, cioè ripristinare lo stress tissutale che il limite di intensità serviva a evitare. Fermarsi a 2 RIR concilia le due cose.
+
+**Bicipiti su 2 sedute, non 3.** Qui la priorità richiesta e il vincolo clinico collidono. Petto e bicipiti sono entrambi prioritari, ma il petto può stare in 3 sedute senza costi (la spinta non flette il gomito destro oltre i 90°), i bicipiti no: tre esposizioni dirette più le trazioni farebbero 5-6 flessioni di gomito a settimana sull'articolazione irritata. La soluzione è concentrare 13 serie in 2 sedute (7 + 6) e rendere **Upper B una seduta senza alcun lavoro diretto di flessione del gomito**. La frequenza a parità di volume ha effetto trascurabile sull'ipertrofia: è il parametro giusto da sacrificare.
+
+**Asimmetria destra-sinistra su tutti gli isolamenti di braccio.** Il destro lavora unilateralmente, con una serie in meno, presa neutra fissa, carico proprio e RIR minimo 2. Il sinistro può usare la presa supina e spingersi a 1 RIR. Il lavoro unilaterale esiste proprio per non far trascinare un lato dall'altro.
+
+**Niente tecniche di intensità.** Drop set, myo-rep, cluster ed eccentriche forzate accumulano ripetizioni in stato di fatica massima con recuperi insufficienti per il riassetto neuromuscolare. Sul gomito destro è imprudente; sul resto il guadagno è di tempo, non di ipertrofia, e qui il tempo c'è.
+
+## 3. Struttura e volume
+
+| | Lun | Mer | Gio | Ven |
+|---|---|---|---|---|
+| | **Upper A** Petto + Bicipiti | **Upper B** Dorso · Spalle · Tricipiti | **Gambe** | **Upper C** Petto + Bicipiti |
+| Serie | 20 | 19 | 17 | 22 |
+| Durata | ~59 min | ~59 min | ~49 min | ~60 min |
+
+**L'ordine dei giorni non è arbitrario.** Mercoledì, giovedì e venerdì sono tre sedute consecutive, ed è il punto critico di questa distribuzione: tre giorni di fila di lavoro sul cingolo scapolare sarebbero un problema con il tuo trapezio destro. Il giorno gambe sta in mezzo proprio per questo — è l'unica seduta in cui spalla, collo e gomito destro non lavorano affatto, quindi spezza il blocco senza costare un giorno di allenamento.
+
+Il resto segue: Upper B il mercoledì perché è la seduta senza alcuna flessione di gomito, e le due sedute con lavoro diretto di bicipite (lunedì e venerdì) restano distanti quattro giorni, seguite da due giorni pieni di riposo. Il lunedì arriva dopo il weekend, quindi la seduta prioritaria capita quando sei più fresco.
+
+Volume settimanale diretto: petto 16 · bicipiti 13 · dorso 13 · cuffia e deltoide posteriore 9 (face pull) · deltoide laterale 5 · tricipiti 5 · quadricipiti 7 · femorali e glutei 6 · polpacci 4.
+
+Petto e bicipiti stanno nella parte alta del range; i gruppi non prioritari stanno nel range di progressione (5-13), che è sufficiente a crescere e non ruba tempo né recupero. Tricipiti e deltoide laterale sono volutamente bassi: i primi perché hanno molta attivazione indiretta dalle spinte e la quota settimanale del gomito destro è limitata, i secondi perché il trapezio superiore destro compensa facilmente sulle alzate e il rapporto rischio-beneficio è sfavorevole.
+
+Le gambe a frequenza 1 non sono un compromesso rilevante: a parità di volume la frequenza conta poco, e 17 serie in una seduta sono ben sotto qualsiasi soglia di rendimento decrescente osservata.
+
+## 4. Scelta degli esercizi
+
+Il criterio è la lunghezza muscolare sotto carico. Dove è sicuro farlo, l'esercizio è scelto per caricare il muscolo in allungamento: croci ai cavi con pausa di 2 secondi in apertura, incline hammer curl con il braccio dietro il busto, overhead extension per il capo lungo del tricipite, leg curl **seduto** anziché prono, calf con pausa in allungamento, pulldown unilaterale con pausa a scapola elevata.
+
+Questo è un criterio di selezione, non una tecnica: il ROM resta completo e non ci sono parziali in allungamento, la cui superiorità nei soggetti allenati non è dimostrata.
+
+Ogni esercizio ha un'alternativa equivalente (campo `alt`) selezionabile in app: serve a variare senza rifare la scheda, e a sostituire al volo un esercizio nella giornata in cui l'articolazione destra non collabora.
+
+## 5. Progressione
+
+1. **Doppia progressione.** Range di ripetizioni fisso. Raggiunto il tetto del range in tutte le serie al RIR previsto → +2,5 kg su macchine e cavi, +2 kg per manubrio. Se le ripetizioni scendono sotto il minimo, torna al carico precedente.
+2. **Blocco di 6 settimane**: RIR 3 → 3/2 → 2 → 2/1 → 2/1 → deload. Il lato destro resta a 2 in ogni settimana.
+3. **Deload alla settimana 6**: volume −40 %, stessi carichi. Ogni 6 settimane, non ogni 8-12: il collo di bottiglia qui è articolare e nervoso, non muscolare, e si accumula prima.
+4. **Settimana 7 = nuovo blocco**: usa le alternative per ruotare 2-3 esercizi e ricomincia. La variazione sistematica aiuta; quella casuale impedisce di progredire nei carichi.
+
+## 6. Regole di stop
+
+- Trapezio destro che sale o si irrigidisce durante una serie → chiudi la serie, riduci il carico. Non "stringere i denti".
+- Parestesie o formicolio alla mano destra, durante o nelle 24 ore successive → riduci del 30 % il volume di braccio nella settimana seguente e segnala al fisiatra. È un criterio numerico, non una valutazione a sensazione.
+- Dolore articolare su un esercizio → passa alla sua alternativa, non insistere.
+
+## 7. Limiti dichiarati
+
+- Quasi tutta la letteratura citata riguarda soggetti tra i 18 e i 40 anni, in studi di 6-12 settimane. L'applicazione a un avanzato di 41 anni è ragionevole ma non verificata.
+- Due delle fonti più importanti sulla dose-risposta del volume erano preprint non ancora sottoposti a revisione tra pari al momento della ricerca.
+- Non esiste letteratura su soggetti con irritazione nervosa periferica che si allenano per l'ipertrofia. Tutte le scelte prudenziali di questa scheda (nessun cedimento, niente tecniche di intensità, asimmetria destra-sinistra) sono inferenze fisiologiche, non conclusioni sperimentali.
+- Lo split non deriva da RCT: nessuno studio confronta split specifici a parità di volume. Deriva dai principi di volume e distribuzione più i vincoli clinici.
+
+---
+*Questo documento è un razionale di allenamento, non un parere medico. I vincoli clinici vengono dal fisiatra e prevalgono su qualunque conclusione qui riportata.*

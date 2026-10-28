@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import useTimer from "../hooks/useTimer.js";
 import Icon from "./Icon.jsx";
-import { S, T1, T4, TIFFANY, WARN } from "../styles.js";
+import { S, T1, T4, ACCENT, WARN, tint, warnTint } from "../styles.js";
 
 export default function RestTimer({ seconds, onDone }) {
   const { time, running, start, reset, done } = useTimer(seconds);
@@ -13,11 +13,11 @@ export default function RestTimer({ seconds, onDone }) {
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
       <div style={{ position: "relative", width: 112, height: 112 }}>
         <svg width="112" height="112" viewBox="0 0 104 104" style={{ transform: "rotate(-90deg)" }}>
-          <circle cx="52" cy="52" r={r} fill="none" stroke="rgba(129,216,208,.14)" strokeWidth="6" />
+          <circle cx="52" cy="52" r={r} fill="none" stroke={tint(0.16)} strokeWidth="6" />
           <circle cx="52" cy="52" r={r} fill="none"
-            stroke={hot ? WARN : TIFFANY} strokeWidth="6" strokeLinecap="round"
+            stroke={hot ? WARN : ACCENT} strokeWidth="6" strokeLinecap="round"
             strokeDasharray={circ} strokeDashoffset={offset}
-            style={{ transition: "stroke-dashoffset .25s linear", filter: `drop-shadow(0 0 6px ${hot ? "rgba(255,143,143,.5)" : "rgba(129,216,208,.45)"})` }} />
+            style={{ transition: "stroke-dashoffset .25s linear", filter: `drop-shadow(0 0 6px ${hot ? warnTint(0.5) : tint(0.45)})` }} />
         </svg>
         <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
           <span style={{ fontSize: 28, fontWeight: 800, color: hot ? WARN : T1, lineHeight: 1 }}>{time}</span>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { MOBILITY } from "../data/programma.js";
 import Icon from "./Icon.jsx";
-import { S, T1, T2, T3, T4, INK, TIFFANY, TIFFANY_GRAD, tint } from "../styles.js";
+import { S, T1, T2, T3, T4, INK, ACCENT, ACCENT_GRAD, tint } from "../styles.js";
 
 export default function Mobility() {
   const [tab, setTab] = useState("pre");
@@ -36,7 +36,7 @@ export default function Mobility() {
               border: active ? `1px solid ${tint(0.4)}` : "1px solid transparent",
               background: active ? `linear-gradient(180deg, ${tint(0.24)}, ${tint(0.1)})` : "transparent",
               boxShadow: active ? "0 2px 10px rgba(2,8,23,.35), inset 0 1px 0 rgba(255,255,255,.18)" : "none",
-              color: active ? TIFFANY : T3, fontFamily: "system-ui,sans-serif",
+              color: active ? ACCENT : T3, fontFamily: "system-ui,sans-serif",
             }}><Icon name={t.icon} size={17} /> {t.label}</button>
           );
         })}
@@ -47,12 +47,12 @@ export default function Mobility() {
           <div style={S.iconTile(40, 13)}><Icon name={tabIcon} size={21} /></div>
           <p style={{ fontSize: 13, color: T2, lineHeight: 1.5, flex: 1 }}>{tips[tab]}</p>
           <div style={{ textAlign: "center" }}>
-            <div style={{ fontSize: 20, fontWeight: 800, color: TIFFANY }}>{doneCount}/{items.length}</div>
+            <div style={{ fontSize: 20, fontWeight: 800, color: ACCENT }}>{doneCount}/{items.length}</div>
             <div style={{ fontSize: 10, color: T4 }}>fatto</div>
           </div>
         </div>
         <div style={{ background: "rgba(255,255,255,.08)", borderRadius: 99, height: 4, marginTop: 10, overflow: "hidden" }}>
-          <div style={{ height: "100%", borderRadius: 99, background: TIFFANY_GRAD, width: `${(doneCount / items.length) * 100}%`, transition: "width .5s ease" }} />
+          <div style={{ height: "100%", borderRadius: 99, background: ACCENT_GRAD, width: `${(doneCount / items.length) * 100}%`, transition: "width .5s ease" }} />
         </div>
       </div>
 
@@ -63,8 +63,8 @@ export default function Mobility() {
             <div style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
               <button onClick={() => toggle(k)} aria-label={done ? "Segna da fare" : "Segna fatto"} style={{
                 width: 44, height: 44, borderRadius: 12, flexShrink: 0, cursor: "pointer", padding: 0,
-                border: `2px solid ${done ? TIFFANY : tint(0.3)}`,
-                background: done ? TIFFANY_GRAD : "transparent", color: INK,
+                border: `2px solid ${done ? ACCENT : tint(0.3)}`,
+                background: done ? ACCENT_GRAD : "transparent", color: INK,
                 display: "flex", alignItems: "center", justifyContent: "center",
               }}>
                 {done && <Icon name="check" size={20} stroke={2.8} />}

@@ -1,13 +1,13 @@
 {
   "name": "SaniFit",
   "short_name": "SaniFit",
-  "description": "Scheda ipertrofia upper body · Rev. 5",
+  "description": "Ipertrofia · 3 Upper + 1 Gambe · Rev. 6",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#0a1b3b",
-  "theme_color": "#0a1b3b",
+  "background_color": "#1e1f23",
+  "theme_color": "#1e1f23",
   "lang": "it",
   "icons": [
     { "src": "./icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },

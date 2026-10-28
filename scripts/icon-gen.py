@@ -1,14 +1,15 @@
-# Genera gli SVG dell icona SaniFit: atleta con bilanciere, tiffany su navy.
+# Genera gli SVG dell icona SaniFit: atleta con bilanciere, arancione fluo su grigio scuro.
 # uso: python3 scripts/icon-gen.py <cartella-output>
 import sys
 out = sys.argv[1]
 
-TIFF = "#81d8d0"
+FIG = "#ff7a00"   # arancione fluo
+BG0, BG1, BG2 = "#3a3b41", "#25262a", "#18191c"   # grigio scuro, radiale
 
 def figure():
     # Atleta che tiene il bilanciere sopra la testa (slancio), tratti arrotondati.
     return f'''
-  <g fill="{TIFF}" stroke="{TIFF}" stroke-linecap="round" stroke-linejoin="round">
+  <g fill="{FIG}" stroke="{FIG}" stroke-linecap="round" stroke-linejoin="round">
     <!-- bilanciere -->
     <line x1="80" y1="150" x2="432" y2="150" stroke-width="18"/>
     <rect x="94"  y="98"  width="34" height="104" rx="11" stroke="none"/>
@@ -28,17 +29,17 @@ def figure():
   </g>'''
 
 def svg(rounded, scale, size=512):
-    bg_shape = f'<rect width="512" height="512" rx="112" fill="url(#navy)"/>' if rounded else '<rect width="512" height="512" fill="url(#navy)"/>'
+    bg_shape = f'<rect width="512" height="512" rx="112" fill="url(#bg)"/>' if rounded else '<rect width="512" height="512" fill="url(#bg)"/>'
     rx = ' rx="112"' if rounded else ''
     gloss = f'<rect width="512" height="512"{rx} fill="url(#gloss)"/>'
     # centra verticalmente la figura (estensione 98..466 → centro 282) e applica la scala
     tf = f'translate(256 256) scale({scale}) translate(-256 -282)'
     return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="{size}" height="{size}" role="img" aria-label="SaniFit">
   <defs>
-    <radialGradient id="navy" cx="50%" cy="30%" r="80%">
-      <stop offset="0" stop-color="#16407a"/>
-      <stop offset=".55" stop-color="#0d2449"/>
-      <stop offset="1" stop-color="#081733"/>
+    <radialGradient id="bg" cx="50%" cy="30%" r="80%">
+      <stop offset="0" stop-color="{BG0}"/>
+      <stop offset=".55" stop-color="{BG1}"/>
+      <stop offset="1" stop-color="{BG2}"/>
     </radialGradient>
     <linearGradient id="gloss" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#ffffff" stop-opacity=".10"/>

@@ -1,8 +1,15 @@
-# SaniFit Rev. 5
+# SaniFit Rev. 6
 
 Web app personale (PWA, mobile-first) per seguire la scheda di allenamento
-**SaniFit Rev. 5** — ipertrofia upper body, Push/Pull × 2, 4 giorni a settimana.
-Un solo utente, su smartphone, in palestra.
+**SaniFit Rev. 6**: ipertrofia con priorità petto e bicipiti, 3 sedute upper e 1 gambe,
+lunedì · mercoledì · giovedì · venerdì. Un solo utente, su smartphone, in palestra.
+
+| | Lun | Mar | Mer | Gio | Ven | Sab | Dom |
+|---|---|---|---|---|---|---|---|
+| | **Upper A** | riposo attivo | **Upper B** | **Gambe** | **Upper C** | riposo attivo | riposo |
+| | Petto + Bicipiti | | Dorso · Spalle · Tricipiti | Full lower | Petto + Bicipiti | | |
+
+Il perché di ogni scelta è in `docs/RAZIONALE_SCIENTIFICO.md`.
 
 ## Comandi
 
@@ -14,12 +21,12 @@ npm run preview  # serve la build di produzione in locale
 ```
 
 Stack: Vite + React 18, JavaScript, nessuna libreria UI, nessun backend.
-Persistenza in `localStorage` (alternative scelte, settimana del blocco, registro carichi con storico).
+Persistenza in `localStorage`: alternative scelte, settimana del blocco, peso di lavoro, registro carichi con storico.
 
-Tema navy + tiffany: sfondo blu navy, pulsanti, titoli e valori color tiffany (#81d8d0),
-card e navigazione in stile *liquid glass*. Ogni tipologia di allenamento ha la sua icona:
-spinta (Push), trazione (Pull), riposo attivo, riposo completo, mobilità pre e post.
-Colori in `src/styles.js`, icone in `src/components/Icon.jsx`. I dati della scheda non cambiano.
+Tema: sfondo grigio scuro, pulsanti, titoli, valori e icone in arancione fluo (#ff7a00),
+card e navigazione in stile *liquid glass*. Ogni tipologia di seduta ha la sua icona:
+spinta (Upper A e C), trazione (Upper B), squat (Gambe), riposo attivo, riposo completo,
+mobilità pre e post. Colori in `src/styles.js`, icone in `src/components/Icon.jsx`.
 
 ## Indirizzo online
 
@@ -38,58 +45,63 @@ il sito Pages.
 
 ## Installare la PWA
 
-In alternativa la cartella `dist/` è un sito statico: puoi pubblicarla su
-qualsiasi hosting HTTPS oppure servirla in rete locale con `npm run preview`.
-
 **iPhone (Safari)**
 1. Apri https://spidermandre.github.io/SaniGym/ in Safari.
 2. Tocca il pulsante **Condividi** (il quadrato con la freccia verso l'alto).
 3. Scorri e tocca **Aggiungi alla schermata Home**, poi **Aggiungi**.
-4. L'icona 💪 SaniFit compare in Home e si apre a schermo intero, anche offline.
+4. L'icona SaniFit compare in Home e si apre a schermo intero, anche offline.
+
+Se l'app era già installata, per vedere una nuova icona rimuovila dalla Home e aggiungila di nuovo:
+iOS conserva l'icona del momento dell'installazione.
 
 **Android (Chrome)**
 1. Apri https://spidermandre.github.io/SaniGym/ in Chrome.
 2. Menu ⋮ → **Installa app** (oppure **Aggiungi a schermata Home**).
+
+## Funzioni
+
+- **Blocco di 6 settimane** (`BLOCK`): card in Home con settimana, fase, RIR obiettivo per multiarticolari e isolamenti e nota; avanzamento manuale con ‹ ›. Alla settimana 6 (deload, `volumeFactor` 0.6) le serie sono ridotte con `Math.ceil(serie × 0.6)` e compare l'avviso "Deload: volume ridotto, stessi carichi".
+- **RIR per esercizio**: nella sessione guidata una pill mostra il RIR da usare. È il più prudente tra l'obiettivo della settimana (`rirMulti` / `rirIso` in base al `type`) e il minimo del campo `rir` dell'esercizio. I vincoli clinici non scendono mai (il destro resta almeno a 2, i face pull a 3); calibrazione e deload restano rispettati.
+- **Esercizi asimmetrici** (`asymmetric: true`): badge "DX ≠ SX", contatori separati Destro / Sinistro, peso separato per lato, e due pulsanti "Destro" e "Sinistro". Il set è completo quando entrambi i lati previsti sono fatti. Le serie del destro sono lette dalla nota dell'esercizio ("A DESTRA: … N serie"); se la nota non le indica, il destro fa le stesse serie del sinistro.
+- **Alternative** (`alt`): ogni esercizio non terapeutico può essere sostituito con la sua variante; serie, ripetizioni, recupero, tempo, RIR e asimmetria restano dell'originale. La scelta è persistita. I face pull 🛡 non hanno alternativa.
+- **Registro carichi**: il peso si regola con − e + (passo del programma: 2.5 kg su macchine e cavi, 2 kg per manubrio) e con ±0.5 kg. Parte dal peso già in uso, poi dall'ultimo registrato (anche con lo stesso nome nella Rev. 5), poi dal valore più alto consigliato. Ogni modifica è salvata subito; il completamento del set scrive anche lo storico, per lato sugli asimmetrici.
+- **Recupero**: il timer parte da solo a set completato, conta da un timestamp (corretto anche dopo il background) e a zero passa al set successivo.
+- **Progressi**: due viste. *Carichi*: ultimo carico, variazione, massimo e sessioni per esercizio e lato, più lo storico della Rev. 5. *Volume*: serie settimanali per gruppo muscolare (`VOLUME`), sedute e note, con il badge "Priorità".
+- **Regole di sicurezza** (`SAFETY_RULES`): sezione apribile in Home, sotto il promemoria clinico.
+- **Mobilità**: checklist Pre / Post / Riposo.
 
 ## Struttura
 
 ```
 src/
   App.jsx                    root + bottom nav
-  data/programma.js          scheda Rev. 5 (PROGRAM_META, BLOCK, SESSIONS, MOBILITY, WEEK) — non modificare i valori
+  data/programma.js          scheda Rev. 6 (PROGRAM_META, BLOCK, SESSIONS, MOBILITY, WEEK, VOLUME, SAFETY_RULES) — non modificare i valori
+  lib/program.js             regole della scheda: RIR effettivo, serie del lato destro, peso per lato, tipologia di seduta
+  lib/weights.js             lettura dei pesi consigliati (range, passo, valori negativi)
   components/
-    Home.jsx                 intestazione, blocco 8 settimane, oggi, settimana, sessioni, promemoria clinico
-    Sessions.jsx             lista delle 4 sessioni
-    SessionDetail.jsx        dettaglio con alternative (↔ Alternativa / ↩ Originale)
-    WorkoutMode.jsx          sessione guidata (set, recupero, registro carichi, deload, sicurezza)
+    Home.jsx                 intestazione, blocco 6 settimane, oggi, settimana, sessioni, promemoria e regole di sicurezza
+    Sessions.jsx             lista delle 4 sessioni, nell'ordine della settimana
+    SessionDetail.jsx        dettaglio con nota di seduta, RIR, asimmetria e alternative
+    WorkoutMode.jsx          sessione guidata (RIR, deload, lati dx/sx, registro carichi, recupero)
     RestTimer.jsx            timer circolare di recupero, parte da solo
-    Progress.jsx             progressi: ultimo carico, variazione, massimo per esercizio
+    Progress.jsx             progressi: carichi e volume
+    VolumePage.jsx           volume settimanale per gruppo muscolare
     Mobility.jsx             checklist Pre / Post / Riposo
-    Icon.jsx                 icone SVG lineari (tipologie di allenamento e interfaccia)
+    Icon.jsx                 icone SVG lineari (tipologie di seduta e interfaccia)
   hooks/
     useTimer.js              timer basato su timestamp (corretto anche dopo il background)
     usePersistedState.js     useState + localStorage
     useAltChoices.js         scelta alternativa per sessione + esercizio
-    useWeightLog.js          registro storico: ultimo valore + storico per giorno
+    useWeightLog.js          registro storico: ultimo valore + storico per giorno e lato
     useWorkingWeights.js     peso di lavoro corrente, salvato a ogni modifica
-  lib/weights.js             lettura dei pesi consigliati (range, passo, valori negativi)
-  styles.js                  oggetto S (glassmorphism chiaro) e colori
+  styles.js                  oggetto S (liquid glass su grigio scuro) e colori
 public/
   manifest.webmanifest, sw.js
   icon.svg · apple-touch-icon.png (180) · icon-192.png · icon-512.png · icon-maskable-512.png
-  Icona: atleta stilizzato che solleva un bilanciere, tiffany su navy.
+  Icona: atleta stilizzato che solleva un bilanciere, arancione fluo su grigio scuro.
   Sorgente in scripts/icon-gen.py (genera gli SVG), PNG con scripts/icon-render.mjs (Chromium/Playwright).
 docs/RAZIONALE_SCIENTIFICO.md  perché la scheda è fatta così
 reference/SaniFit_rev4.jsx     versione precedente, riferimento visivo e funzionale
 ```
-
-## Novità Rev. 5 rispetto a Rev. 4
-
-- **Alternative** (`alt`): ogni esercizio non terapeutico può essere sostituito con la sua variante equivalente; la scelta è persistita e vale anche nella sessione guidata. I face pull 🛡 non hanno alternativa.
-- **Blocco di 8 settimane** (`BLOCK`): card in Home con settimana, fase e RIR target, avanzamento manuale con ‹ ›. Nella sessione guidata il RIR compare nella pill del tag; alla settimana 7 (Deload) le serie sono dimezzate con un avviso.
-- **Focus e tempo**: muscolo target sotto il nome dell'esercizio e cadenza "⏱ tempo 3-1-1" (eccentrica-pausa-concentrica, secondi).
-- **Registro carichi**: il peso si regola con i pulsanti − e +, senza tastiera, più una regolazione fine da ±0.5 kg valida per ogni esercizio. Sulla dip machine assistita il valore è un'assistenza negativa e si ferma a 0 (corpo libero). Parte dal peso già in uso, altrimenti dall'ultimo registrato, altrimenti dal valore più alto consigliato nella scheda. Il passo segue la progressione del programma: 2.5 kg su macchine e cavi, 2 kg per manubrio. Ogni modifica è salvata subito, il completamento del set scrive anche la voce nello storico.
-- **Progressi** (tab 📈): per ogni esercizio allenato mostra ultimo carico, variazione rispetto alla volta precedente, massimo e numero di sessioni. Riepilogo con allenamenti registrati e data dell'ultimo.
-- Timer di recupero basato su timestamp: continua a contare correttamente se l'app va in background.
 
 Vincoli clinici, protocollo di mobilità e dati della scheda sono in `src/data/programma.js` e non vanno modificati senza il fisiatra.
