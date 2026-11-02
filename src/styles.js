@@ -21,7 +21,7 @@ export const T3 = "rgba(244,244,245,.66)";
 export const T4 = "rgba(244,244,245,.56)";
 // Inchiostro scuro per il testo sopra i pulsanti arancioni.
 export const INK = "#1a1007";
-// Avvisi (promemoria clinico, ultimi secondi del recupero): rosso, distinto dall'arancione.
+// Avvisi (ultimi secondi del recupero, calo di carico in Progressi): rosso, distinto dall'arancione.
 export const WARN = "#ff4d6d";
 export const warnTint = (a) => `rgba(255,77,109,${a})`;
 

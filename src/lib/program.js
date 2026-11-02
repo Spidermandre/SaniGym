@@ -1,8 +1,6 @@
 // Regole della scheda Rev. 6 tradotte in funzioni.
 // Nessun valore della scheda viene modificato: qui si leggono e si combinano.
 
-import { suggestedMax } from "./weights.js";
-
 // ── RIR ──────────────────────────────────────────────────────────────────────
 // Il campo `rir` di un esercizio è una fascia ("2-3", "1-2", "3") oppure una
 // fascia per lato ("2 dx / 1-2 sx"). La settimana del blocco dà un obiettivo
@@ -59,14 +57,6 @@ export function fmtRir(r) {
 export function rightSideSets(note) {
   const m = String(note || "").match(/A DESTRA[^.]*?(\d+)\s+serie/i);
   return m ? Number(m[1]) : null;
-}
-
-// Peso consigliato per lato: "12–14 kg dx / 16–18 kg sx" → dx 14, sx 18.
-// Se il testo non distingue i lati, entrambi partono dal valore più alto indicato.
-export function suggestedForSide(text, side) {
-  const parts = String(text || "").split("/");
-  const own = parts.find((p) => new RegExp(`\\b${side}\\b`, "i").test(p));
-  return suggestedMax(own || text);
 }
 
 // ── Tipologia di seduta (per l'icona) ────────────────────────────────────────

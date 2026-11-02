@@ -62,12 +62,12 @@ iOS conserva l'icona del momento dell'installazione.
 
 - **Blocco di 6 settimane** (`BLOCK`): card in Home con settimana, fase, RIR obiettivo per multiarticolari e isolamenti e nota; avanzamento manuale con ‹ ›. Alla settimana 6 (deload, `volumeFactor` 0.6) le serie sono ridotte con `Math.ceil(serie × 0.6)` e compare l'avviso "Deload: volume ridotto, stessi carichi".
 - **RIR per esercizio**: nella sessione guidata una pill mostra il RIR da usare. È il più prudente tra l'obiettivo della settimana (`rirMulti` / `rirIso` in base al `type`) e il minimo del campo `rir` dell'esercizio. I vincoli clinici non scendono mai (il destro resta almeno a 2, i face pull a 3); calibrazione e deload restano rispettati.
-- **Esercizi asimmetrici** (`asymmetric: true`): badge "DX ≠ SX", contatori separati Destro / Sinistro, peso separato per lato, e due pulsanti "Destro" e "Sinistro". Il set è completo quando entrambi i lati previsti sono fatti. Le serie del destro sono lette dalla nota dell'esercizio ("A DESTRA: … N serie"); se la nota non le indica, il destro fa le stesse serie del sinistro.
+- **Esercizi asimmetrici** (`asymmetric: true`): badge "DX ≠ SX" e contatori separati Destro / Sinistro; peso e pulsante "Set completato" sono unici, come negli altri esercizi, e ogni set vale per entrambi i lati finché il destro non ha finito le sue serie. Le serie del destro sono lette dalla nota dell'esercizio ("A DESTRA: … N serie"); se la nota non le indica, il destro fa le stesse serie del sinistro.
 - **Alternative** (`alt`): ogni esercizio non terapeutico può essere sostituito con la sua variante; serie, ripetizioni, recupero, tempo, RIR e asimmetria restano dell'originale. La scelta è persistita. I face pull 🛡 non hanno alternativa.
-- **Registro carichi**: il peso si regola con − e + (passo del programma: 2.5 kg su macchine e cavi, 2 kg per manubrio) e con ±0.5 kg. Parte dal peso già in uso, poi dall'ultimo registrato (anche con lo stesso nome nella Rev. 5), poi dal valore più alto consigliato. Ogni modifica è salvata subito; il completamento del set scrive anche lo storico, per lato sugli asimmetrici.
+- **Registro carichi**: il peso si regola con − e + (passo del programma: 2.5 kg su macchine e cavi, 2 kg per manubrio) e con ±0.5 kg. Parte dal peso già in uso, poi dall'ultimo registrato (anche con lo stesso nome nella Rev. 5), poi dal valore più alto consigliato. Ogni modifica è salvata subito; il completamento del set scrive anche lo storico.
 - **Recupero**: il timer parte da solo a set completato, conta da un timestamp (corretto anche dopo il background) e a zero passa al set successivo.
 - **Progressi**: due viste. *Carichi*: ultimo carico, variazione, massimo e sessioni per esercizio e lato, più lo storico della Rev. 5. *Volume*: serie settimanali per gruppo muscolare (`VOLUME`), sedute e note, con il badge "Priorità".
-- **Regole di sicurezza** (`SAFETY_RULES`): sezione apribile in Home, sotto il promemoria clinico.
+- **Regole di sicurezza** (`SAFETY_RULES`): sezione apribile in fondo alla Home.
 - **Mobilità**: checklist Pre / Post / Riposo.
 
 ## Struttura
@@ -76,13 +76,13 @@ iOS conserva l'icona del momento dell'installazione.
 src/
   App.jsx                    root + bottom nav
   data/programma.js          scheda Rev. 6 (PROGRAM_META, BLOCK, SESSIONS, MOBILITY, WEEK, VOLUME, SAFETY_RULES) — non modificare i valori
-  lib/program.js             regole della scheda: RIR effettivo, serie del lato destro, peso per lato, tipologia di seduta
+  lib/program.js             regole della scheda: RIR effettivo, serie del lato destro, tipologia di seduta
   lib/weights.js             lettura dei pesi consigliati (range, passo, valori negativi)
   components/
-    Home.jsx                 intestazione, blocco 6 settimane, oggi, settimana, sessioni, promemoria e regole di sicurezza
+    Home.jsx                 intestazione, blocco 6 settimane, oggi, settimana, sessioni, regole di sicurezza
     Sessions.jsx             lista delle 4 sessioni, nell'ordine della settimana
     SessionDetail.jsx        dettaglio con nota di seduta, RIR, asimmetria e alternative
-    WorkoutMode.jsx          sessione guidata (RIR, deload, lati dx/sx, registro carichi, recupero)
+    WorkoutMode.jsx          sessione guidata (RIR, deload, contatori dx/sx, registro carichi, recupero)
     RestTimer.jsx            timer circolare di recupero, parte da solo
     Progress.jsx             progressi: carichi e volume
     VolumePage.jsx           volume settimanale per gruppo muscolare
@@ -92,7 +92,7 @@ src/
     useTimer.js              timer basato su timestamp (corretto anche dopo il background)
     usePersistedState.js     useState + localStorage
     useAltChoices.js         scelta alternativa per sessione + esercizio
-    useWeightLog.js          registro storico: ultimo valore + storico per giorno e lato
+    useWeightLog.js          registro storico: ultimo valore + storico per giorno
     useWorkingWeights.js     peso di lavoro corrente, salvato a ogni modifica
   styles.js                  oggetto S (liquid glass su grigio scuro) e colori
 public/

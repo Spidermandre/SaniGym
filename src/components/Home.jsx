@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { PROGRAM_META, BLOCK, SESSIONS, WEEK, SAFETY_RULES } from "../data/programma.js";
 import Icon, { iconForSession, iconForDay } from "./Icon.jsx";
-import { S, T1, T2, T3, T4, ACCENT, WARN, tint, warnTint } from "../styles.js";
+import { S, T1, T2, T3, T4, ACCENT, tint } from "../styles.js";
 
 export default function Home({ onSelect, week, setWeek, block }) {
   const [rulesOpen, setRulesOpen] = useState(false);
@@ -101,17 +101,6 @@ export default function Home({ onSelect, week, setWeek, block }) {
             <div style={{ color: T3, fontSize: 11, lineHeight: 1.4 }}>{s.subtitle}</div>
           </div>
         ))}
-      </div>
-
-      {/* promemoria clinico */}
-      <div style={{ ...S.glass, padding: 16, marginBottom: 12, background: warnTint(0.07), borderColor: warnTint(0.3) }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 13, fontWeight: 700, marginBottom: 5, color: WARN }}>
-          <Icon name="alert" size={16} stroke={2} /> Promemoria clinico
-        </div>
-        <p style={{ fontSize: 12, color: T2, lineHeight: 1.65 }}>
-          Calore al trapezio destro prima di ogni sessione. Prese neutre o pronate privilegiate.
-          Stop immediato se compaiono parestesie o formicolio al braccio/mano destra.
-        </p>
       </div>
 
       {/* regole di sicurezza */}

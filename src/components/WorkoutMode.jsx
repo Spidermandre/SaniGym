@@ -4,15 +4,11 @@ import Icon from "./Icon.jsx";
 import useWeightLog, { fmtDate } from "../hooks/useWeightLog.js";
 import useWorkingWeights from "../hooks/useWorkingWeights.js";
 import { suggestedMax, stepFor, clampWeight, fmtWeight } from "../lib/weights.js";
-import { effectiveRir, fmtRir, suggestedForSide } from "../lib/program.js";
-import { S, T1, T2, T3, T4, ACCENT, ACCENT_GRAD, BG_GRADIENT, BG_DEEP, INK, tint } from "../styles.js";
+import { effectiveRir, fmtRir } from "../lib/program.js";
+import { S, T1, T2, T3, T4, ACCENT, ACCENT_GRAD, BG_GRADIENT, BG_DEEP, tint } from "../styles.js";
 
 // Regolazione fine: mezzo chilo in più o in meno su qualsiasi esercizio.
 const FINE_STEP = 0.5;
-const SIDES = [
-  { key: "dx", label: "Destro" },
-  { key: "sx", label: "Sinistro" },
-];
 
 const stepBtn = {
   width: 60, height: 60, borderRadius: 20, flexShrink: 0,
@@ -28,15 +24,6 @@ const fineBtn = {
   border: `1px solid ${tint(0.32)}`, cursor: "pointer",
   background: tint(0.07), color: ACCENT,
   fontSize: 14, fontWeight: 700, fontFamily: "system-ui,sans-serif",
-  display: "flex", alignItems: "center", justifyContent: "center",
-};
-
-// Pulsanti compatti per lo stepper di un lato (esercizi asimmetrici).
-const sideBtn = {
-  flex: 1, minWidth: 44, height: 46, borderRadius: 13, padding: 0,
-  border: `1px solid ${tint(0.36)}`, cursor: "pointer",
-  background: tint(0.08), color: ACCENT,
-  fontSize: 14, fontWeight: 800, fontFamily: "system-ui,sans-serif",
   display: "flex", alignItems: "center", justifyContent: "center",
 };
 
@@ -61,17 +48,12 @@ export default function WorkoutMode({ session: rawSession, block, onExit }) {
   const [exIdx, setExIdx] = useState(0);
   const [furthest, setFurthest] = useState(0);
   const [setsDone, setSetsDone] = useState({});
-  // Esercizi asimmetrici: lati già fatti nel set in corso.
-  const [pending, setPending] = useState({});
   const [phase, setPhase] = useState("exercise");
   const ex = session.exercises[exIdx];
   const exTotal = totalOf(ex);
   const curSets = setsDone[exIdx] || 0;
   const isReviewing = exIdx < furthest;
   const asym = !!ex.asymmetric;
-  const setNo = curSets + 1;
-  const pend = pending[exIdx] || { dx: false, sx: false };
-  const needs = { dx: asym && setNo <= sideTotal(ex, "dx"), sx: asym && setNo <= sideTotal(ex, "sx") };
 
   // Registro storico: snapshot all'avvio (per "Ultima volta"), scrittura a set completato.
   const wlog = useWeightLog();
@@ -80,23 +62,21 @@ export default function WorkoutMode({ session: rawSession, block, onExit }) {
   // uscendo dalla sessione o ricaricando l'app prima di completare il set.
   const working = useWorkingWeights();
   const baseKey = `${session.id}:${exIdx}:${ex.altUsed ? "alt" : "main"}`;
-  const keyFor = (side) => (side ? `${baseKey}:${side}` : baseKey);
+  // Fino alla prima versione Rev. 6 gli esercizi a braccio singolo salvavano il peso
+  // per lato: il valore del sinistro (quello più alto) fa da punto di partenza.
+  const legacySx = asym ? `${baseKey}:sx` : null;
   const step = stepFor(ex.weight);
-  // "Ultima volta": stesso esercizio e lato; senza lati vale anche lo stesso nome
-  // di esercizio registrato in un'altra seduta o in una revisione precedente.
-  const lastFor = (side) => history[keyFor(side)] || (side ? null : wlog.lastByName(ex.name));
+  // "Ultima volta": stesso esercizio; altrimenti lo stesso nome di esercizio
+  // registrato in un'altra seduta o in una revisione precedente.
+  const last = history[baseKey] || (legacySx && history[legacySx]) || wlog.lastByName(ex.name);
   // Partenza: il peso già in uso, altrimenti l'ultimo registrato,
-  // altrimenti il valore più alto consigliato nella scheda (per lato, se indicato).
-  const valueFor = (side) => {
-    const suggested = side ? suggestedForSide(ex.weight, side) : suggestedMax(ex.weight);
-    return clampWeight(working.get(keyFor(side)) ?? lastFor(side)?.weight ?? suggested, ex.weight);
-  };
-  const bump = (side, delta) => {
+  // altrimenti il valore più alto consigliato nella scheda.
+  const stored = working.get(baseKey) ?? (legacySx ? working.get(legacySx) : null);
+  const weightValue = clampWeight(stored ?? last?.weight ?? suggestedMax(ex.weight), ex.weight);
+  const bump = (delta) => {
     if (isReviewing) return;
-    working.set(keyFor(side), clampWeight(valueFor(side) + delta, ex.weight));
+    working.set(baseKey, clampWeight(weightValue + delta, ex.weight));
   };
-  const weightValue = valueFor(null);
-  const last = lastFor(null);
   const rir = fmtRir(effectiveRir(ex, block));
 
   const totalSets = session.exercises.reduce((a, e) => a + totalOf(e), 0);
@@ -108,23 +88,11 @@ export default function WorkoutMode({ session: rawSession, block, onExit }) {
     const next = curSets + 1;
     setSetsDone((p) => ({ ...p, [exIdx]: next }));
     const base = { sessionId: session.id, exIdx, altUsed: !!ex.altUsed, name: ex.name, week: block?.week ?? null, date: new Date().toISOString() };
-    if (asym) {
-      for (const { key } of SIDES) {
-        if (setNo <= sideTotal(ex, key)) wlog.save({ ...base, side: key, weight: valueFor(key), sets: Math.min(next, sideTotal(ex, key)) });
-      }
-      setPending((p) => ({ ...p, [exIdx]: { dx: false, sx: false } }));
-    } else {
-      wlog.save({ ...base, weight: weightValue, sets: next });
-    }
+    // Un solo set per entrambi i lati: sugli asimmetrici il destro si ferma prima
+    // (lo indicano i contatori Destro / Sinistro).
+    wlog.save({ ...base, weight: weightValue, sets: next });
     if (next >= exTotal && exIdx === session.exercises.length - 1) setPhase("done");
     else setPhase("rest");
-  };
-  // Asimmetrico: il set è completato quando entrambi i lati previsti sono fatti.
-  const markSide = (side) => {
-    if (isReviewing || !needs[side] || pend[side]) return;
-    const np = { ...pend, [side]: true };
-    if ((!needs.dx || np.dx) && (!needs.sx || np.sx)) completeSet();
-    else setPending((p) => ({ ...p, [exIdx]: np }));
   };
   const afterRest = () => {
     const cur = setsDone[exIdx] || 0;
@@ -155,7 +123,7 @@ export default function WorkoutMode({ session: rawSession, block, onExit }) {
     ? `Prossimo: ${session.exercises[exIdx + 1].name}`
     : `Prossimo set ${(setsDone[exIdx] || 0) + 1}/${exTotal}`;
 
-  const sideCount = (side) => Math.min(curSets, sideTotal(ex, side)) + (pend[side] ? 1 : 0);
+  const sideCount = (side) => Math.min(curSets, sideTotal(ex, side));
   const statBoxes = asym
     ? [["Rip", ex.reps], ["Destro", `${sideCount("dx")}/${sideTotal(ex, "dx")}`], ["Sinistro", `${sideCount("sx")}/${sideTotal(ex, "sx")}`]]
     : [["Serie", ex.sets], ["Rip", ex.reps], ["Set", `${curSets}/${ex.sets}`]];
@@ -237,37 +205,10 @@ export default function WorkoutMode({ session: rawSession, block, onExit }) {
               )}
 
               {/* peso usato */}
-              {asym ? (
-                <div style={{ marginBottom: 16, marginTop: ex.weight ? -4 : 0 }}>
-                  <div style={{ ...labelSm, marginBottom: 8 }}>Peso usato</div>
-                  {SIDES.map(({ key, label }) => {
-                    const v = valueFor(key);
-                    const l = lastFor(key);
-                    return (
-                      <div key={key} style={{ ...S.glassSm, padding: "10px 12px", marginBottom: 8 }}>
-                        <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 8 }}>
-                          <span style={{ fontSize: 12, fontWeight: 800, color: T2, textTransform: "uppercase", letterSpacing: ".05em" }}>{label}</span>
-                          <span data-testid={`weight-value-${key}`} style={{ fontSize: 24, fontWeight: 800, color: ACCENT }}>
-                            {fmtWeight(v)}<span style={{ fontSize: 12, fontWeight: 700, marginLeft: 3, color: T3 }}>kg</span>
-                          </span>
-                        </div>
-                        <div style={{ display: "flex", gap: 6 }}>
-                          {[[-step, `−${fmtWeight(step)}`], [-FINE_STEP, "−0.5"], [FINE_STEP, "+0.5"], [step, `+${fmtWeight(step)}`]].map(([d, txt]) => (
-                            <button key={txt} type="button" disabled={isReviewing} onClick={() => bump(key, d)}
-                              aria-label={`${d > 0 ? "Aggiungi" : "Togli"} ${fmtWeight(Math.abs(d))} kg ${label.toLowerCase()}`}
-                              style={{ ...sideBtn, opacity: isReviewing ? .35 : 1 }}>{txt}</button>
-                          ))}
-                        </div>
-                        {l && <div style={{ fontSize: 11, color: T4, marginTop: 7, textAlign: "center" }}>Ultima volta: {fmtWeight(l.weight)} kg · {fmtDate(l.date)}</div>}
-                      </div>
-                    );
-                  })}
-                </div>
-              ) : (
                 <div style={{ marginBottom: 16, marginTop: ex.weight ? -4 : 0 }}>
                   <div style={{ ...labelSm, marginBottom: 8 }}>Peso usato</div>
                   <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                    <button type="button" aria-label={`Togli ${fmtWeight(step)} kg`} onClick={() => bump(null, -step)} disabled={isReviewing}
+                    <button type="button" aria-label={`Togli ${fmtWeight(step)} kg`} onClick={() => bump(-step)} disabled={isReviewing}
                       style={{ ...stepBtn, opacity: isReviewing ? .35 : 1 }}>−</button>
                     <div style={{ flex: 1, textAlign: "center", minWidth: 0 }}>
                       <div data-testid="weight-value" style={{ fontSize: 32, fontWeight: 800, color: ACCENT, lineHeight: 1.05 }}>
@@ -275,18 +216,17 @@ export default function WorkoutMode({ session: rawSession, block, onExit }) {
                       </div>
                       <div style={{ fontSize: 10, color: T4, marginTop: 2 }}>passo {fmtWeight(step)} kg</div>
                     </div>
-                    <button type="button" aria-label={`Aggiungi ${fmtWeight(step)} kg`} onClick={() => bump(null, step)} disabled={isReviewing}
+                    <button type="button" aria-label={`Aggiungi ${fmtWeight(step)} kg`} onClick={() => bump(step)} disabled={isReviewing}
                       style={{ ...stepBtn, opacity: isReviewing ? .35 : 1 }}>+</button>
                   </div>
                   <div style={{ display: "flex", justifyContent: "center", gap: 10, marginTop: 10 }}>
-                    <button type="button" aria-label={`Togli ${fmtWeight(FINE_STEP)} kg`} onClick={() => bump(null, -FINE_STEP)} disabled={isReviewing}
+                    <button type="button" aria-label={`Togli ${fmtWeight(FINE_STEP)} kg`} onClick={() => bump(-FINE_STEP)} disabled={isReviewing}
                       style={{ ...fineBtn, opacity: isReviewing ? .35 : 1 }}>−0.5</button>
-                    <button type="button" aria-label={`Aggiungi ${fmtWeight(FINE_STEP)} kg`} onClick={() => bump(null, FINE_STEP)} disabled={isReviewing}
+                    <button type="button" aria-label={`Aggiungi ${fmtWeight(FINE_STEP)} kg`} onClick={() => bump(FINE_STEP)} disabled={isReviewing}
                       style={{ ...fineBtn, opacity: isReviewing ? .35 : 1 }}>+0.5</button>
                   </div>
                   {last && <div style={{ fontSize: 11, color: T4, marginTop: 9, textAlign: "center" }}>Ultima volta: {fmtWeight(last.weight)} kg · {fmtDate(last.date)}</div>}
                 </div>
-              )}
 
               {/* set progress dots */}
               <div style={{ display: "flex", gap: 5, marginBottom: 16 }}>
@@ -316,22 +256,6 @@ export default function WorkoutMode({ session: rawSession, block, onExit }) {
         <div style={{ flexShrink: 0, padding: "10px 18px", paddingBottom: "max(14px, env(safe-area-inset-bottom))", background: `linear-gradient(180deg, rgba(20,21,24,0) 0%, ${BG_DEEP} 35%)` }}>
           {isReviewing ? (
             <button style={{ ...S.btnGrad(), width: "100%", fontSize: 15, padding: "16px" }} onClick={goToCurrent}>Torna all'esercizio attuale <Icon name="arrowR" size={17} stroke={2.2} /></button>
-          ) : asym ? (
-            <div style={{ display: "flex", gap: 10 }}>
-              {SIDES.map(({ key, label }) => {
-                const done = pend[key];
-                const off = !needs[key];
-                const idle = done || off;
-                return (
-                  <button key={key} data-testid={`side-${key}`} onClick={() => markSide(key)} disabled={idle}
-                    style={{ ...S.btnGrad(idle ? "rgba(255,255,255,.08)" : ACCENT_GRAD, idle ? T3 : INK),
-                      flex: 1, fontSize: 15, padding: "16px 8px",
-                      ...(idle ? { boxShadow: "none", border: "1px solid rgba(255,255,255,.12)" } : {}) }}>
-                    <Icon name="check" size={18} stroke={2.6} /> {off ? `${label} finito` : done ? `${label} fatto` : label}
-                  </button>
-                );
-              })}
-            </div>
           ) : (
             <button style={{ ...S.btnGrad(), width: "100%", fontSize: 16, padding: "17px" }} onClick={completeSet}><Icon name="check" size={19} stroke={2.6} /> Set completato</button>
           )}

@@ -57,7 +57,7 @@ function summarize(hist, extra) {
 const CURRENT_KEYS = new Set();
 SESSIONS.forEach((s) => s.exercises.forEach((ex, i) => {
   for (const variant of ["main", "alt"]) {
-    for (const side of ex.asymmetric ? ["dx", "sx"] : [null]) CURRENT_KEYS.add(`${s.id}:${i}:${variant}${side ? `:${side}` : ""}`);
+    for (const side of ex.asymmetric ? [null, "dx", "sx"] : [null]) CURRENT_KEYS.add(`${s.id}:${i}:${variant}${side ? `:${side}` : ""}`);
   }
 }));
 
@@ -78,7 +78,8 @@ export default function Progress({ week }) {
     const rows = [];
     s.exercises.forEach((ex, i) => {
       for (const variant of ["main", "alt"]) {
-        for (const side of ex.asymmetric ? ["dx", "sx"] : [null]) {
+        // Asimmetrici: voce unica, più quelle registrate per lato nella prima versione Rev. 6.
+        for (const side of ex.asymmetric ? [null, "dx", "sx"] : [null]) {
           const key = `${s.id}:${i}:${variant}${side ? `:${side}` : ""}`;
           const hist = historyFor(key);
           if (!hist.length) continue;
