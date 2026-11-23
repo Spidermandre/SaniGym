@@ -1,5 +1,5 @@
 import { VOLUME, PROGRAM_META } from "../data/programma.js";
-import { S, T1, T2, T3, T4, ACCENT, tint } from "../styles.js";
+import { S, T1, T2, T3, T4, ACCENT, FONT_ARCADE, tint } from "../styles.js";
 
 // Volume settimanale diretto per gruppo muscolare (dati VOLUME della scheda).
 export default function VolumePage() {
@@ -7,7 +7,7 @@ export default function VolumePage() {
   return (
     <div>
       <div style={{ ...S.glassSm, padding: "12px 14px", marginBottom: 14, display: "flex", alignItems: "baseline", gap: 10 }}>
-        <div style={{ fontSize: 26, fontWeight: 800, color: ACCENT, lineHeight: 1 }}>{total}</div>
+        <div style={{ fontFamily: FONT_ARCADE, fontSize: 20, color: ACCENT, lineHeight: 1 }}>{total}</div>
         <div style={{ fontSize: 12, color: T3, lineHeight: 1.4 }}>serie dirette a settimana · {PROGRAM_META.split}</div>
       </div>
       {VOLUME.map((v) => (
@@ -22,7 +22,7 @@ export default function VolumePage() {
               <p style={{ fontSize: 12, color: T2, lineHeight: 1.5, marginTop: 5 }}>{v.note}</p>
             </div>
             <div style={{ textAlign: "right", flexShrink: 0 }}>
-              <div style={{ fontSize: 24, fontWeight: 800, color: ACCENT, lineHeight: 1 }}>{v.sets}</div>
+              <div style={{ fontFamily: FONT_ARCADE, fontSize: 18, color: ACCENT, lineHeight: 1 }}>{v.sets}</div>
               <div style={{ fontSize: 10, color: T4, letterSpacing: ".04em" }}>SERIE/SETT</div>
             </div>
           </div>

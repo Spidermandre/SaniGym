@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#1e1f23" />
+    <meta name="theme-color" content="#000000" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="SaniFit" />
@@ -14,9 +14,15 @@
     <title>SaniFit</title>
     <style>
       *{box-sizing:border-box;margin:0;padding:0}
-      html,body{background:#1e1f23;color-scheme:dark;overflow-x:hidden;-webkit-text-size-adjust:100%}
-      body{font-family:system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;color:#f4f4f5}
-      button{font-family:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+      html,body{background:#000;color-scheme:dark;overflow-x:hidden;-webkit-text-size-adjust:100%}
+      /* Font pixel: niente grassetto o corsivo sintetici, che impastano i pixel.
+         font-size-adjust porta VT323 e Press Start 2P alla stessa altezza delle minuscole,
+         così le dimensioni dei componenti restano leggibili con entrambi. */
+      body{font-family:"VT323",ui-monospace,Menlo,monospace;font-size-adjust:.53;font-synthesis:none;-webkit-font-smoothing:none;color:#d6ffcf}
+      h1,h2,h3{font-family:"Press Start 2P",ui-monospace,Menlo,monospace;font-weight:400}
+      button{font-family:"Press Start 2P",ui-monospace,Menlo,monospace;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+      button:active{transform:translateY(2px)}
+      ::selection{background:#39ff14;color:#000}
       input{font-family:inherit}
       h1,h2,h3,p{margin:0}
     </style>

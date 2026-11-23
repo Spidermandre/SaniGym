@@ -5,29 +5,29 @@ import useWeightLog, { fmtDate } from "../hooks/useWeightLog.js";
 import useWorkingWeights from "../hooks/useWorkingWeights.js";
 import { suggestedMax, stepFor, clampWeight, fmtWeight } from "../lib/weights.js";
 import { effectiveRir, fmtRir } from "../lib/program.js";
-import { S, T1, T2, T3, T4, ACCENT, ACCENT_GRAD, BG_GRADIENT, BG_DEEP, tint } from "../styles.js";
+import { S, T1, T2, T3, T4, ACCENT, ACCENT_GRAD, BG_GRADIENT, BG_DEEP, FONT_ARCADE, FONT_BODY, tint } from "../styles.js";
 
 // Regolazione fine: mezzo chilo in più o in meno su qualsiasi esercizio.
 const FINE_STEP = 0.5;
 
 const stepBtn = {
-  width: 60, height: 60, borderRadius: 20, flexShrink: 0,
-  border: `1px solid ${tint(0.42)}`, cursor: "pointer", padding: 0,
-  background: `linear-gradient(180deg, ${tint(0.22)}, ${tint(0.07)})`,
-  boxShadow: "inset 0 1px 0 rgba(255,255,255,.18), 0 6px 18px rgba(0,0,0,.45)",
-  color: ACCENT, fontSize: 30, fontWeight: 700, lineHeight: 1,
-  fontFamily: "system-ui,sans-serif", display: "flex", alignItems: "center", justifyContent: "center",
+  width: 60, height: 60, borderRadius: 6, flexShrink: 0,
+  border: `2px solid ${ACCENT}`, cursor: "pointer", padding: 0,
+  background: "#000",
+  boxShadow: `0 4px 0 ${tint(0.35)}, 0 0 16px ${tint(0.3)}`,
+  color: ACCENT, fontSize: 22, fontWeight: 400, lineHeight: 1,
+  fontFamily: FONT_ARCADE, textShadow: `0 0 8px ${tint(0.6)}`, display: "flex", alignItems: "center", justifyContent: "center",
 };
 
 const fineBtn = {
-  minWidth: 84, height: 44, borderRadius: 14, padding: "0 14px",
-  border: `1px solid ${tint(0.32)}`, cursor: "pointer",
+  minWidth: 84, height: 44, borderRadius: 4, padding: "0 14px",
+  border: `2px solid ${tint(0.45)}`, cursor: "pointer",
   background: tint(0.07), color: ACCENT,
-  fontSize: 14, fontWeight: 700, fontFamily: "system-ui,sans-serif",
+  fontSize: 11, fontWeight: 400, fontFamily: FONT_ARCADE,
   display: "flex", alignItems: "center", justifyContent: "center",
 };
 
-const labelSm = { fontSize: 10, fontWeight: 700, color: tint(0.85), textTransform: "uppercase", letterSpacing: ".06em" };
+const labelSm = { fontFamily: FONT_ARCADE, fontSize: 8, fontWeight: 400, color: tint(0.85), textTransform: "uppercase", letterSpacing: ".06em", lineHeight: 1.4 };
 
 // Serie totali di un esercizio: per gli asimmetrici il lato con più serie.
 const totalOf = (ex) => (ex.asymmetric ? Math.max(ex.sets, ex.dxSets ?? ex.sets) : ex.sets);
@@ -107,8 +107,8 @@ export default function WorkoutMode({ session: rawSession, block, onExit }) {
   if (phase === "done") return (
     <div style={S.overlay}>
       <div style={{ ...S.glass, padding: 40, maxWidth: 320, width: "90%", textAlign: "center" }}>
-        <div style={{ ...S.iconTile(84, 26), margin: "0 auto 18px" }}><Icon name="trophy" size={46} stroke={1.7} /></div>
-        <h2 style={{ fontSize: 26, fontWeight: 800, marginBottom: 8, color: ACCENT }}>Ottimo lavoro!</h2>
+        <div style={{ ...S.iconTile(84, 26), margin: "0 auto 18px" }}><Icon name="trophy" size={46} /></div>
+        <h2 style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.4, marginBottom: 12, color: ACCENT }}>Ottimo lavoro!</h2>
         <p style={{ color: T2, marginBottom: 6 }}>{session.label} completata</p>
         <p style={{ color: T3, fontSize: 13, lineHeight: 1.6, marginBottom: 28 }}>
           Esegui ora il protocollo di stretching post-allenamento.<br />
@@ -129,31 +129,31 @@ export default function WorkoutMode({ session: rawSession, block, onExit }) {
     : [["Serie", ex.sets], ["Rip", ex.reps], ["Set", `${curSets}/${ex.sets}`]];
 
   return (
-    <div style={{ position: "fixed", inset: 0, zIndex: 200, background: BG_GRADIENT, display: "flex", flexDirection: "column", fontFamily: "system-ui,sans-serif", color: T1 }}>
+    <div style={{ position: "fixed", inset: 0, zIndex: 200, background: BG_GRADIENT, display: "flex", flexDirection: "column", fontFamily: FONT_BODY, color: T1 }}>
       <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: "20px 18px 8px", paddingTop: "max(20px, env(safe-area-inset-top))", overflowY: "auto" }}>
 
         {/* header */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, marginBottom: 14 }}>
-          <button style={S.iconBtn} onClick={onExit} aria-label="Esci"><Icon name="close" size={20} stroke={2.2} /></button>
+          <button style={S.iconBtn} onClick={onExit} aria-label="Esci"><Icon name="close" size={20} /></button>
           <div style={{ textAlign: "center", minWidth: 0 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: tint(0.85), letterSpacing: ".08em", textTransform: "uppercase" }}>{session.label}</div>
-            <div style={{ fontSize: 14, fontWeight: 700 }}>{session.subtitle}</div>
+            <div style={{ fontFamily: FONT_ARCADE, fontSize: 10, color: ACCENT, letterSpacing: ".06em", textTransform: "uppercase", marginBottom: 4 }}>{session.label}</div>
+            <div style={{ fontSize: 18, color: T2 }}>{session.subtitle}</div>
           </div>
           <div style={S.pill}>{exIdx + 1}/{session.exercises.length}</div>
         </div>
 
         {/* progress bar */}
-        <div style={{ background: "rgba(255,255,255,.08)", borderRadius: 99, height: 4, marginBottom: 14, overflow: "hidden" }}>
-          <div style={{ height: "100%", borderRadius: 99, background: ACCENT_GRAD, width: `${progress * 100}%`, transition: "width .6s ease" }} />
+        <div style={{ background: tint(0.12), borderRadius: 0, height: 4, marginBottom: 14, overflow: "hidden" }}>
+          <div style={{ height: "100%", borderRadius: 0, background: ACCENT, boxShadow: `0 0 8px ${tint(0.6)}`, width: `${progress * 100}%`, transition: "width .6s ease" }} />
         </div>
 
         {/* nav tra esercizi */}
         <div style={{ display: "flex", gap: 8, marginBottom: 14, alignItems: "center", flexWrap: "wrap" }}>
           <button style={{ ...S.btnGhost, opacity: exIdx === 0 ? .35 : 1, pointerEvents: exIdx === 0 ? "none" : "auto" }} onClick={goPrev}>
-            <Icon name="chevL" size={16} stroke={2.2} /> Precedente
+            <Icon name="chevL" size={16} /> Precedente
           </button>
           {isReviewing && exIdx < furthest && (
-            <button style={S.btnGhost} onClick={goNextReview}>Successivo <Icon name="chevR" size={16} stroke={2.2} /></button>
+            <button style={S.btnGhost} onClick={goNextReview}>Successivo <Icon name="chevR" size={16} /></button>
           )}
           {isReviewing && <span style={{ ...S.pill, fontSize: 10 }}><Icon name="eye" size={13} /> Revisione</span>}
         </div>
@@ -163,8 +163,8 @@ export default function WorkoutMode({ session: rawSession, block, onExit }) {
           {phase === "exercise" ? (
             <div style={{ flex: 1 }}>
               {isDeload && (
-                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12, padding: "8px 12px", borderRadius: 12,
-                  background: tint(0.14), border: `1px solid ${tint(0.45)}`, color: ACCENT, fontSize: 12, fontWeight: 700 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12, padding: "8px 12px", borderRadius: 4,
+                  background: tint(0.14), border: `2px solid ${tint(0.45)}`, color: ACCENT, fontSize: 16 }}>
                   <Icon name="rest" size={15} /> Deload: volume ridotto, stessi carichi
                 </div>
               )}
@@ -173,14 +173,14 @@ export default function WorkoutMode({ session: rawSession, block, onExit }) {
                 {rir && <div data-testid="rir-pill" style={{ ...S.pill, background: tint(0.2), borderColor: tint(0.55) }}>{rir}</div>}
                 {asym && <div style={S.pill}><Icon name="balance" size={13} /> DX ≠ SX</div>}
               </div>
-              <h2 style={{ fontSize: 21, fontWeight: 800, lineHeight: 1.25, marginBottom: ex.focus ? 4 : 16 }}>{ex.name}</h2>
+              <h2 style={{ fontSize: 15, fontWeight: 400, lineHeight: 1.5, marginBottom: ex.focus ? 6 : 16 }}>{ex.name}</h2>
               {ex.focus && <div style={{ fontSize: 13, color: tint(0.92), marginBottom: 14 }}>{ex.focus}</div>}
 
               <div style={{ display: "flex", gap: 10, marginBottom: ex.tempo ? 10 : 16 }}>
                 {statBoxes.map(([k, v]) => (
                   <div key={k} style={{ ...S.glassSm, flex: 1, textAlign: "center", padding: "11px 6px" }}>
                     <div style={{ ...labelSm, marginBottom: 3 }}>{k}</div>
-                    <div style={{ fontSize: 19, fontWeight: 800, color: T1 }}>{v}</div>
+                    <div style={{ fontFamily: FONT_ARCADE, fontSize: 14, color: T1, lineHeight: 1.3 }}>{v}</div>
                   </div>
                 ))}
               </div>
@@ -192,12 +192,12 @@ export default function WorkoutMode({ session: rawSession, block, onExit }) {
               )}
 
               {ex.weight && (
-                <div style={{ marginBottom: 16, padding: "12px 16px", borderRadius: 16, background: tint(0.08), border: `1px solid ${tint(0.3)}` }}>
+                <div style={{ marginBottom: 16, padding: "12px 16px", borderRadius: 6, background: tint(0.06), border: `2px solid ${tint(0.35)}` }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                     <div style={S.iconTile(38, 12)}><Icon name="weight" size={23} /></div>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ ...labelSm, marginBottom: 2 }}>Peso consigliato</div>
-                      <div style={{ fontSize: 16, fontWeight: 800, color: ACCENT }}>{ex.weight}</div>
+                      <div style={{ fontFamily: FONT_ARCADE, fontSize: 13, color: ACCENT, lineHeight: 1.4, marginTop: 4 }}>{ex.weight}</div>
                     </div>
                   </div>
                   <div style={{ fontSize: 11, color: T3, lineHeight: 1.4, marginTop: 8 }}>Aumenta di {fmtWeight(step)} kg quando arrivi al tetto delle rip in tutte le serie al RIR previsto</div>
@@ -209,10 +209,10 @@ export default function WorkoutMode({ session: rawSession, block, onExit }) {
                   <div style={{ ...labelSm, marginBottom: 8 }}>Peso usato</div>
                   <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                     <button type="button" aria-label={`Togli ${fmtWeight(step)} kg`} onClick={() => bump(-step)} disabled={isReviewing}
-                      style={{ ...stepBtn, opacity: isReviewing ? .35 : 1 }}>−</button>
+                      style={{ ...stepBtn, opacity: isReviewing ? .35 : 1 }}>-</button>
                     <div style={{ flex: 1, textAlign: "center", minWidth: 0 }}>
-                      <div data-testid="weight-value" style={{ fontSize: 32, fontWeight: 800, color: ACCENT, lineHeight: 1.05 }}>
-                        {fmtWeight(weightValue)}<span style={{ fontSize: 14, fontWeight: 700, marginLeft: 3, color: T3 }}>kg</span>
+                      <div data-testid="weight-value" style={{ fontFamily: FONT_ARCADE, fontSize: 26, color: ACCENT, lineHeight: 1.1, textShadow: "0 0 10px rgba(57,255,20,.6)" }}>
+                        {fmtWeight(weightValue)}<span style={{ fontSize: 11, marginLeft: 4, color: T3, textShadow: "none" }}>kg</span>
                       </div>
                       <div style={{ fontSize: 10, color: T4, marginTop: 2 }}>passo {fmtWeight(step)} kg</div>
                     </div>
@@ -221,7 +221,7 @@ export default function WorkoutMode({ session: rawSession, block, onExit }) {
                   </div>
                   <div style={{ display: "flex", justifyContent: "center", gap: 10, marginTop: 10 }}>
                     <button type="button" aria-label={`Togli ${fmtWeight(FINE_STEP)} kg`} onClick={() => bump(-FINE_STEP)} disabled={isReviewing}
-                      style={{ ...fineBtn, opacity: isReviewing ? .35 : 1 }}>−0.5</button>
+                      style={{ ...fineBtn, opacity: isReviewing ? .35 : 1 }}>-0.5</button>
                     <button type="button" aria-label={`Aggiungi ${fmtWeight(FINE_STEP)} kg`} onClick={() => bump(FINE_STEP)} disabled={isReviewing}
                       style={{ ...fineBtn, opacity: isReviewing ? .35 : 1 }}>+0.5</button>
                   </div>
@@ -231,21 +231,21 @@ export default function WorkoutMode({ session: rawSession, block, onExit }) {
               {/* set progress dots */}
               <div style={{ display: "flex", gap: 5, marginBottom: 16 }}>
                 {Array.from({ length: exTotal }).map((_, i) => (
-                  <div key={i} style={{ flex: 1, height: 5, borderRadius: 3, background: i < curSets ? ACCENT_GRAD : "rgba(255,255,255,.08)", transition: "background .3s" }} />
+                  <div key={i} style={{ flex: 1, height: 5, borderRadius: 3, background: i < curSets ? ACCENT : tint(0.12), transition: "background .3s" }} />
                 ))}
               </div>
 
-              <div style={{ background: "rgba(255,255,255,.04)", borderRadius: 14, padding: "12px 14px", border: "1px solid rgba(255,255,255,.08)" }}>
+              <div style={{ background: tint(0.04), borderRadius: 4, padding: "12px 14px", border: `2px dashed ${tint(0.22)}` }}>
                 <div style={{ ...labelSm, display: "flex", alignItems: "center", gap: 6, marginBottom: 6 }}><Icon name="note" size={14} /> Nota clinica</div>
                 <p style={{ fontSize: 13, color: T2, lineHeight: 1.6 }}>{ex.note}</p>
               </div>
             </div>
           ) : (
             <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 18 }}>
-              <div style={{ ...labelSm, fontSize: 12, letterSpacing: ".1em" }}>Recupero</div>
+              <div style={{ ...labelSm, fontSize: 12, letterSpacing: ".1em", textShadow: "0 0 8px rgba(57,255,20,.6)" }}>Recupero</div>
               <RestTimer seconds={ex.rest} onDone={afterRest} />
               <p style={{ fontSize: 13, color: T3, textAlign: "center" }}>{nextLabel}</p>
-              <button style={S.btnGhost} onClick={afterRest}>Salta recupero <Icon name="arrowR" size={16} stroke={2.1} /></button>
+              <button style={S.btnGhost} onClick={afterRest}>Salta recupero <Icon name="arrowR" size={16} /></button>
             </div>
           )}
         </div>
@@ -253,11 +253,11 @@ export default function WorkoutMode({ session: rawSession, block, onExit }) {
 
       {/* footer fisso: azione principale sempre sotto il pollice */}
       {phase === "exercise" && (
-        <div style={{ flexShrink: 0, padding: "10px 18px", paddingBottom: "max(14px, env(safe-area-inset-bottom))", background: `linear-gradient(180deg, rgba(20,21,24,0) 0%, ${BG_DEEP} 35%)` }}>
+        <div style={{ flexShrink: 0, padding: "10px 18px", paddingBottom: "max(14px, env(safe-area-inset-bottom))", background: `linear-gradient(180deg, rgba(0,0,0,0) 0%, ${BG_DEEP} 35%)` }}>
           {isReviewing ? (
-            <button style={{ ...S.btnGrad(), width: "100%", fontSize: 15, padding: "16px" }} onClick={goToCurrent}>Torna all'esercizio attuale <Icon name="arrowR" size={17} stroke={2.2} /></button>
+            <button style={{ ...S.btnGrad(), width: "100%", fontSize: 10, padding: "16px" }} onClick={goToCurrent}>Torna all'esercizio attuale <Icon name="arrowR" size={17} /></button>
           ) : (
-            <button style={{ ...S.btnGrad(), width: "100%", fontSize: 16, padding: "17px" }} onClick={completeSet}><Icon name="check" size={19} stroke={2.6} /> Set completato</button>
+            <button style={{ ...S.btnGrad(), width: "100%", fontSize: 14, padding: "17px" }} onClick={completeSet}><Icon name="check" size={19} /> Set completato</button>
           )}
         </div>
       )}

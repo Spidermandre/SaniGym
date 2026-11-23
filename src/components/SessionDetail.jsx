@@ -1,5 +1,5 @@
 import Icon, { iconForSession } from "./Icon.jsx";
-import { S, T1, T2, T3, INK, ACCENT, ACCENT_GRAD, BG_TOP, tint } from "../styles.js";
+import { S, T1, T2, T3, INK, ACCENT, ACCENT_GRAD, BG_TOP, FONT_ARCADE, tint } from "../styles.js";
 import { resolveExercise } from "../hooks/useAltChoices.js";
 
 const meta = { display: "inline-flex", alignItems: "center", gap: 5, fontSize: 12, color: T3 };
@@ -8,19 +8,19 @@ export default function SessionDetail({ session, alts, onBack, onStart }) {
   const totalSets = session.exercises.reduce((a, e) => a + e.sets, 0);
   return (
     <div style={{ overflowY: "auto", paddingBottom: 110 }}>
-      {/* header grigio con alone arancione e icona di tipologia */}
+      {/* header nero con alone verde e icona di tipologia */}
       <div style={{
-        background: `radial-gradient(ellipse 90% 80% at 85% 10%, ${tint(0.22)} 0%, transparent 60%), linear-gradient(170deg, #34353b 0%, ${BG_TOP} 100%)`,
-        padding: "52px 20px 26px", borderRadius: "0 0 28px 28px", position: "relative",
-        borderBottom: `1px solid ${tint(0.28)}`, boxShadow: "0 12px 30px rgba(0,0,0,.4)",
+        background: `radial-gradient(ellipse 90% 80% at 85% 10%, ${tint(0.2)} 0%, transparent 60%), linear-gradient(170deg, #031a00 0%, ${BG_TOP} 100%)`,
+        padding: "52px 20px 26px", borderRadius: 0, position: "relative",
+        borderBottom: `2px solid ${tint(0.5)}`, boxShadow: `0 6px 24px ${tint(0.12)}`,
       }}>
         <div style={{ position: "absolute", right: 18, top: 50, ...S.iconTile(76, 24) }}>
-          <Icon name={iconForSession(session)} size={42} stroke={1.8} />
+          <Icon name={iconForSession(session)} size={42} />
         </div>
         <div style={{ position: "relative", zIndex: 1 }}>
-          <button style={{ ...S.iconBtn, marginBottom: 18 }} onClick={onBack} aria-label="Indietro"><Icon name="back" size={20} stroke={2.2} /></button>
+          <button style={{ ...S.iconBtn, marginBottom: 18 }} onClick={onBack} aria-label="Indietro"><Icon name="back" size={20} /></button>
           <div style={{ fontSize: 11, fontWeight: 700, color: tint(0.85), letterSpacing: ".08em", textTransform: "uppercase", marginBottom: 5 }}>{session.day}</div>
-          <h1 style={{ fontSize: 30, fontWeight: 800, marginBottom: 4, color: ACCENT }}>{session.label}</h1>
+          <h1 style={{ fontSize: 24, fontWeight: 400, lineHeight: 1.3, marginBottom: 8, textShadow: "0 0 12px rgba(57,255,20,.55)", color: ACCENT }}>{session.label}</h1>
           <p style={{ color: T2, fontSize: 15, marginBottom: 14, paddingRight: 70 }}>{session.subtitle}</p>
           <div style={{ display: "flex", gap: 7, flexWrap: "wrap" }}>
             {[session.tag, `${session.exercises.length} esercizi`, `${totalSets} serie totali`].map((t) => (
@@ -36,8 +36,8 @@ export default function SessionDetail({ session, alts, onBack, onStart }) {
             <p style={{ fontSize: 12.5, color: T2, lineHeight: 1.55 }}>{session.sessionNote}</p>
           </div>
         )}
-        <button style={{ ...S.btnGrad(), width: "100%", marginBottom: 18, fontSize: 16, padding: "17px" }} onClick={onStart}>
-          <Icon name="play" size={16} /> Inizia sessione guidata
+        <button style={{ ...S.btnGrad(), width: "100%", marginBottom: 18, fontSize: 11, padding: "17px 12px" }} onClick={onStart}>
+          <Icon name="play" size={12} glow={false} /> Inizia sessione guidata
         </button>
         {session.exercises.map((raw, i) => {
           const useAlt = alts.isAlt(session.id, i);
@@ -45,7 +45,7 @@ export default function SessionDetail({ session, alts, onBack, onStart }) {
           return (
           <div key={i} style={{ ...S.glass, padding: "15px 16px", marginBottom: 10, ...(useAlt ? { borderColor: tint(0.5) } : {}) }}>
             <div style={{ display: "flex", gap: 13, alignItems: "flex-start" }}>
-              <div style={{ width: 36, height: 36, borderRadius: 11, background: ACCENT_GRAD, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 14, flexShrink: 0, color: INK }}>{i + 1}</div>
+              <div style={{ width: 36, height: 36, borderRadius: 4, background: ACCENT, boxShadow: `0 0 10px ${tint(0.45)}`, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: FONT_ARCADE, fontSize: 12, flexShrink: 0, color: INK }}>{i + 1}</div>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 2, color: T1 }}>{ex.name}</div>
                 {ex.focus && <div style={{ fontSize: 12, color: tint(0.9), marginBottom: 7 }}>{ex.focus}</div>}

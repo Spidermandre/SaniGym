@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { PROGRAM_META, BLOCK, SESSIONS, WEEK, SAFETY_RULES } from "../data/programma.js";
 import Icon, { iconForSession, iconForDay } from "./Icon.jsx";
-import { S, T1, T2, T3, T4, ACCENT, tint } from "../styles.js";
+import { S, T1, T2, T3, T4, ACCENT, FONT_ARCADE, tint } from "../styles.js";
 
 export default function Home({ onSelect, week, setWeek, block }) {
   const [rulesOpen, setRulesOpen] = useState(false);
@@ -16,9 +16,9 @@ export default function Home({ onSelect, week, setWeek, block }) {
   return (
     <div style={S.page}>
       <div style={{ marginBottom: 24 }}>
-        <p style={{ fontSize: 13, color: T3, marginBottom: 2 }}>Il tuo allenamento personale</p>
-        <h1 style={{ fontSize: 34, fontWeight: 800, letterSpacing: "-.02em", color: ACCENT }}>{PROGRAM_META.name}</h1>
-        <p style={{ color: T4, fontSize: 13, marginTop: 3 }}>{PROGRAM_META.subtitle}</p>
+        <p style={{ fontSize: 13, color: T3, marginBottom: 8 }}>Il tuo allenamento personale</p>
+        <h1 style={{ fontSize: 28, fontWeight: 400, letterSpacing: 0, textShadow: "0 0 12px rgba(57,255,20,.6)", color: ACCENT }}>{PROGRAM_META.name}</h1>
+        <p style={{ color: T4, fontSize: 13, marginTop: 10 }}>{PROGRAM_META.subtitle}</p>
       </div>
 
       {/* blocco 6 settimane */}
@@ -33,24 +33,24 @@ export default function Home({ onSelect, week, setWeek, block }) {
         </div>
         <div style={{ display: "flex", gap: 4, flexShrink: 0 }}>
           <button aria-label="Settimana precedente" onClick={() => setWeek(Math.max(1, week - 1))} disabled={week <= 1}
-            style={{ ...S.iconBtn, opacity: week <= 1 ? .35 : 1 }}><Icon name="chevL" size={20} stroke={2.2} /></button>
+            style={{ ...S.iconBtn, opacity: week <= 1 ? .35 : 1 }}><Icon name="chevL" size={20} /></button>
           <button aria-label="Settimana successiva" onClick={() => setWeek(Math.min(maxWeek, week + 1))} disabled={week >= maxWeek}
-            style={{ ...S.iconBtn, opacity: week >= maxWeek ? .35 : 1 }}><Icon name="chevR" size={20} stroke={2.2} /></button>
+            style={{ ...S.iconBtn, opacity: week >= maxWeek ? .35 : 1 }}><Icon name="chevR" size={20} /></button>
         </div>
       </div>
 
       {/* oggi */}
       <p style={S.sectionLabel}>Oggi — {todayCode}</p>
       {todaySess ? (
-        <div style={{ ...S.glass, padding: 22, marginBottom: 22, background: `linear-gradient(150deg, ${tint(0.14)}, rgba(255,255,255,.03))`, borderColor: tint(0.38), cursor: "pointer" }}
+        <div style={{ ...S.glass, padding: 22, marginBottom: 22, background: `linear-gradient(150deg, ${tint(0.14)}, rgba(0,0,0,0))`, borderColor: tint(0.38), cursor: "pointer" }}
           onClick={() => onSelect(todaySess)}>
           <div style={{ display: "flex", justifyContent: "space-between", gap: 12 }}>
             <div style={{ minWidth: 0 }}>
-              <div style={{ ...S.pill, marginBottom: 11 }}><Icon name={iconForSession(todaySess)} size={13} stroke={2.2} /> Oggi</div>
-              <h2 style={{ fontSize: 22, fontWeight: 800, color: ACCENT }}>{todaySess.label}</h2>
+              <div style={{ ...S.pill, marginBottom: 11 }}><Icon name={iconForSession(todaySess)} size={13} /> Oggi</div>
+              <h2 style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.3, color: ACCENT }}>{todaySess.label}</h2>
               <p style={{ color: T2, fontSize: 14, marginTop: 2 }}>{todaySess.subtitle}</p>
             </div>
-            <div style={S.iconTile(60, 20)}><Icon name={iconForSession(todaySess)} size={32} stroke={1.9} /></div>
+            <div style={S.iconTile(60, 20)}><Icon name={iconForSession(todaySess)} size={32} /></div>
           </div>
           <div style={{ display: "flex", gap: 7, marginTop: 14, flexWrap: "wrap" }}>
             {[todaySess.tag, `${todaySess.exercises.length} esercizi`].map((t) => <div key={t} style={S.pill}>{t}</div>)}
@@ -60,7 +60,7 @@ export default function Home({ onSelect, week, setWeek, block }) {
         <div style={{ ...S.glass, padding: 22, marginBottom: 22, display: "flex", gap: 16, alignItems: "flex-start" }}>
           <div style={S.iconTile(52, 17)}><Icon name={isActiveRest ? "rest" : "off"} size={28} /></div>
           <div style={{ minWidth: 0 }}>
-            <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 5, color: ACCENT }}>{isActiveRest ? "Riposo attivo" : "Riposo completo"}</h2>
+            <h2 style={{ fontSize: 14, fontWeight: 400, lineHeight: 1.4, marginBottom: 8, color: ACCENT }}>{isActiveRest ? "Riposo attivo" : "Riposo completo"}</h2>
             <p style={{ color: T3, fontSize: 13, lineHeight: 1.6 }}>
               {isActiveRest
                 ? "Esegui la routine di mobilità cervicale + nerve glide. Camminata o bici leggera in zona 2."
@@ -78,8 +78,8 @@ export default function Home({ onSelect, week, setWeek, block }) {
           const isToday = w.day === todayCode;
           return (
             <div key={i} style={{ ...S.glassSm, flex: "1 0 auto", minWidth: 44, padding: "9px 4px", textAlign: "center",
-              background: isToday ? tint(0.18) : "rgba(255,255,255,.04)",
-              borderColor: isToday ? tint(0.55) : "rgba(255,255,255,.08)" }}>
+              background: isToday ? tint(0.18) : "#000",
+              borderColor: isToday ? tint(0.55) : tint(0.22) }}>
               <div style={{ fontSize: 9, fontWeight: isToday ? 800 : 600, color: isToday ? ACCENT : T4, marginBottom: 5 }}>{w.day}</div>
               <div style={{ height: 22, display: "flex", alignItems: "center", justifyContent: "center", color: s || isToday ? ACCENT : T3 }}>
                 <Icon name={iconForDay(w.sid)} size={19} />
@@ -107,18 +107,18 @@ export default function Home({ onSelect, week, setWeek, block }) {
       <div style={{ ...S.glass, padding: 0, overflow: "hidden" }}>
         <button onClick={() => setRulesOpen((o) => !o)} aria-expanded={rulesOpen} aria-controls="regole-sicurezza"
           style={{ width: "100%", minHeight: 56, padding: "12px 16px", display: "flex", alignItems: "center", gap: 12, cursor: "pointer",
-            background: "transparent", border: "none", color: T1, fontFamily: "system-ui,sans-serif", textAlign: "left" }}>
+            background: "transparent", border: "none", color: T1, fontFamily: FONT_ARCADE, fontSize: 10, textAlign: "left" }}>
           <div style={S.iconTile(36, 12)}><Icon name="shield" size={19} /></div>
           <div style={{ flex: 1 }}>
             <div style={{ fontSize: 14, fontWeight: 800, color: ACCENT }}>Regole di sicurezza</div>
             <div style={{ fontSize: 11, color: T3 }}>{SAFETY_RULES.length} regole · valgono per ogni seduta</div>
           </div>
-          <span style={{ color: ACCENT, transform: rulesOpen ? "rotate(90deg)" : "none", transition: "transform .2s" }}><Icon name="chevR" size={18} stroke={2.2} /></span>
+          <span style={{ color: ACCENT, transform: rulesOpen ? "rotate(90deg)" : "none", transition: "transform .2s" }}><Icon name="chevR" size={18} /></span>
         </button>
         {rulesOpen && (
           <ol id="regole-sicurezza" style={{ listStyle: "none", padding: "0 16px 14px", margin: 0 }}>
             {SAFETY_RULES.map((r, i) => (
-              <li key={i} style={{ display: "flex", gap: 10, padding: "9px 0", borderTop: "1px solid rgba(255,255,255,.07)" }}>
+              <li key={i} style={{ display: "flex", gap: 10, padding: "9px 0", borderTop: "1px solid rgba(57,255,20,.12)" }}>
                 <span style={{ flexShrink: 0, width: 22, height: 22, borderRadius: 7, background: tint(0.14), border: `1px solid ${tint(0.34)}`,
                   color: ACCENT, fontSize: 11, fontWeight: 800, display: "flex", alignItems: "center", justifyContent: "center" }}>{i + 1}</span>
                 <span style={{ fontSize: 12.5, color: T2, lineHeight: 1.55 }}>{r}</span>

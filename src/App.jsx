@@ -9,7 +9,7 @@ import Icon from "./components/Icon.jsx";
 import useAltChoices from "./hooks/useAltChoices.js";
 import usePersistedState from "./hooks/usePersistedState.js";
 import { BLOCK } from "./data/programma.js";
-import { BG, BG_GRADIENT, T1, T4, ACCENT, tint } from "./styles.js";
+import { BG, BG_GRADIENT, T1, ACCENT, INK, FONT_BODY, FONT_ARCADE, tint } from "./styles.js";
 
 const NAV = [
   { key: "home", icon: "home", label: "Home" },
@@ -18,25 +18,22 @@ const NAV = [
   { key: "mobility", icon: "mobility", label: "Mobilità" },
 ];
 
-// Grigio scuro con aloni arancioni molto tenui.
+// Nero con un alone verde in alto e linee di scansione appena visibili, come un monitor CRT.
 const bg = {
-  position: "fixed", inset: 0, zIndex: 0,
+  position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none",
   background: `
-    radial-gradient(ellipse 85% 55% at 12% 0%,  rgba(255,122,0,.10) 0%, transparent 55%),
-    radial-gradient(ellipse 70% 50% at 92% 96%, rgba(255,85,0,.08) 0%, transparent 55%),
+    repeating-linear-gradient(180deg, rgba(57,255,20,.035) 0px, rgba(57,255,20,.035) 1px, transparent 1px, transparent 3px),
     ${BG_GRADIENT}`,
 };
 
-// "Liquid glass" su grigio: vetro neutro, bordo luminoso, riflesso in alto.
+// Barra di navigazione: pannello nero con cornice verde; la voce attiva è piena.
 const navBar = {
-  position: "fixed", bottom: "max(20px, env(safe-area-inset-bottom))", left: "50%", transform: "translateX(-50%)",
-  display: "flex", gap: 3, padding: 6, zIndex: 90,
-  background: "linear-gradient(180deg, rgba(255,255,255,.13) 0%, rgba(255,255,255,.05) 100%)",
-  backdropFilter: "blur(36px) saturate(180%)",
-  WebkitBackdropFilter: "blur(36px) saturate(180%)",
-  border: "1px solid rgba(255,255,255,.14)",
-  borderRadius: 28,
-  boxShadow: "0 14px 40px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.2), inset 0 -1px 0 rgba(255,255,255,.04)",
+  position: "fixed", bottom: "max(18px, env(safe-area-inset-bottom))", left: "50%", transform: "translateX(-50%)",
+  display: "flex", gap: 4, padding: 5, zIndex: 90,
+  background: "#000",
+  border: `2px solid ${tint(0.7)}`,
+  borderRadius: 6,
+  boxShadow: `0 0 0 4px #000, 0 0 22px ${tint(0.3)}`,
   maxWidth: "calc(100vw - 24px)",
 };
 
@@ -55,7 +52,7 @@ export default function App() {
   const activeNav = nav === "detail" ? "sessions" : nav;
 
   return (
-    <div style={{ minHeight: "100vh", background: BG, position: "relative", fontFamily: "system-ui,sans-serif", color: T1 }}>
+    <div style={{ minHeight: "100vh", background: BG, position: "relative", fontFamily: FONT_BODY, color: T1 }}>
       <div style={bg} />
       {workout && <WorkoutMode session={alts.resolveSession(workout)} block={block} onExit={exitWorkout} />}
       {!workout && (
@@ -75,15 +72,15 @@ export default function App() {
                   aria-current={active ? "page" : undefined}
                   onClick={() => { setNav(item.key); if (item.key !== "sessions") setSel(null); }}
                   style={{
-                    display: "flex", flexDirection: "column", alignItems: "center", gap: 3,
-                    padding: "8px 10px", borderRadius: 22, cursor: "pointer", minHeight: 44,
-                    border: active ? `1px solid ${tint(0.38)}` : "1px solid transparent",
-                    background: active ? `linear-gradient(180deg, ${tint(0.26)}, ${tint(0.1)})` : "transparent",
-                    boxShadow: active ? "inset 0 1px 0 rgba(255,255,255,.25), 0 4px 14px rgba(2,8,23,.35)" : "none",
-                    color: active ? ACCENT : T4,
-                    fontSize: 10, fontWeight: active ? 700 : 500, fontFamily: "system-ui,sans-serif", minWidth: 60,
+                    display: "flex", flexDirection: "column", alignItems: "center", gap: 6,
+                    padding: "8px 6px 7px", borderRadius: 3, cursor: "pointer", minHeight: 52, minWidth: 64,
+                    border: "none",
+                    background: active ? ACCENT : "transparent",
+                    boxShadow: active ? `0 0 14px ${tint(0.5)}` : "none",
+                    color: active ? INK : tint(0.72),
+                    fontFamily: FONT_ARCADE, fontSize: 7, letterSpacing: 0,
                   }}>
-                  <Icon name={item.icon} size={22} stroke={active ? 2.1 : 1.8} />
+                  <Icon name={item.icon} size={24} glow={!active} />
                   {item.label}
                 </button>
               );

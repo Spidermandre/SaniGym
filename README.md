@@ -23,10 +23,14 @@ npm run preview  # serve la build di produzione in locale
 Stack: Vite + React 18, JavaScript, nessuna libreria UI, nessun backend.
 Persistenza in `localStorage`: alternative scelte, settimana del blocco, peso di lavoro, registro carichi con storico.
 
-Tema: sfondo grigio scuro, pulsanti, titoli, valori e icone in arancione fluo (#ff7a00),
-card e navigazione in stile *liquid glass*. Ogni tipologia di seduta ha la sua icona:
-spinta (Upper A e C), trazione (Upper B), squat (Gambe), riposo attivo, riposo completo,
-mobilità pre e post. Colori in `src/styles.js`, icone in `src/components/Icon.jsx`.
+Tema arcade: sfondo nero con linee di scansione da monitor CRT, scritte, pulsanti e icone
+in verde fluo (#39ff14) con bagliore al neon. Caratteri *Press Start 2P* per titoli, etichette,
+pulsanti e numeri, *VT323* per i testi (entrambi SIL Open Font License, inclusi in
+`src/assets/fonts/` con le licenze, nessuna richiesta esterna). Icone in pixel art su griglia
+12×12, rese a multipli interi della griglia per restare nitide. Ogni tipologia di seduta ha
+la sua icona: spinta (Upper A e C), trazione (Upper B), squat (Gambe), riposo attivo, riposo
+completo, mobilità pre e post. Colori in `src/styles.js`, disegni delle icone in
+`src/components/pixelIcons.js`.
 
 ## Indirizzo online
 
@@ -94,12 +98,12 @@ src/
     useAltChoices.js         scelta alternativa per sessione + esercizio
     useWeightLog.js          registro storico: ultimo valore + storico per giorno
     useWorkingWeights.js     peso di lavoro corrente, salvato a ogni modifica
-  styles.js                  oggetto S (liquid glass su grigio scuro) e colori
+  styles.js                  oggetto S (tema arcade nero/verde fluo), colori e font
 public/
   manifest.webmanifest, sw.js
   icon.svg · apple-touch-icon.png (180) · icon-192.png · icon-512.png · icon-maskable-512.png
-  Icona: atleta con bilanciere sopra la testa, tratto lineare arrotondato come le icone dell'app,
-  gradiente arancione fluo con bagliore su lastra grafite.
+  Icona: sollevatore in pixel art con il bilanciere sopra la testa, verde fluo al neon
+  su nero con linee di scansione, come le icone dell'app.
   Sorgente in scripts/icon-gen.py (genera gli SVG), PNG con scripts/icon-render.mjs (Chromium/Playwright).
 docs/RAZIONALE_SCIENTIFICO.md  perché la scheda è fatta così
 reference/SaniFit_rev4.jsx     versione precedente, riferimento visivo e funzionale

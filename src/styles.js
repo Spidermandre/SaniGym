@@ -1,105 +1,108 @@
-// Tema grigio scuro + arancione fluo.
-// Sfondo grigio antracite, pulsanti, titoli, valori e icone in arancione fluo,
-// card e navigazione in "liquid glass" neutro con accenti arancioni.
+// Tema arcade: sfondo nero, testo e pulsanti verde fluo, caratteri pixel.
+// Press Start 2P per titoli, etichette, numeri e pulsanti; VT323 per i testi lunghi.
+// Bordi netti da 2 px, angoli quasi squadrati, bagliore al neon e pulsanti con ombra piena.
 
-// Grigio
-export const BG_TOP = "#2a2b30";
-export const BG = "#1e1f23";
-export const BG_DEEP = "#141518";
-export const BG_GRADIENT = `linear-gradient(180deg, ${BG_TOP} 0%, #1c1d21 60%, ${BG_DEEP} 100%)`;
+export const FONT_ARCADE = '"Press Start 2P", ui-monospace, Menlo, monospace';
+export const FONT_BODY = '"VT323", ui-monospace, Menlo, monospace';
 
-// Arancione fluo e varianti per i gradienti.
-export const ACCENT = "#ff7a00";
-export const ACCENT_LIGHT = "#ffa24d";
-export const ACCENT_DEEP = "#ff5500";
-export const ACCENT_GRAD = `linear-gradient(135deg, ${ACCENT_LIGHT} 0%, ${ACCENT} 50%, ${ACCENT_DEEP} 100%)`;
+// Nero
+export const BG_TOP = "#000000";
+export const BG = "#000000";
+export const BG_DEEP = "#000000";
+export const BG_GRADIENT = "radial-gradient(ellipse 120% 70% at 50% 0%, #031a00 0%, #000 60%)";
 
-// Testo: chiaro per la lettura, arancione per titoli, valori ed etichette.
-export const T1 = "#f4f4f5";
-export const T2 = "rgba(244,244,245,.80)";
-export const T3 = "rgba(244,244,245,.66)";
-export const T4 = "rgba(244,244,245,.56)";
-// Inchiostro scuro per il testo sopra i pulsanti arancioni.
-export const INK = "#1a1007";
-// Avvisi (ultimi secondi del recupero, calo di carico in Progressi): rosso, distinto dall'arancione.
-export const WARN = "#ff4d6d";
-export const warnTint = (a) => `rgba(255,77,109,${a})`;
+// Verde fluo e varianti.
+export const ACCENT = "#39ff14";
+export const ACCENT_LIGHT = "#8cff70";
+export const ACCENT_DEEP = "#21c400";
+// Leggera smussatura verticale, come un tasto di un cabinato.
+export const ACCENT_GRAD = `linear-gradient(180deg, ${ACCENT_LIGHT} 0%, ${ACCENT} 45%, ${ACCENT_DEEP} 100%)`;
 
-// Tinte arancioni trasparenti riutilizzate.
-export const tint = (a) => `rgba(255,122,0,${a})`;
+// Testo: verde chiaro per la lettura, verde fluo per titoli, valori ed etichette.
+export const T1 = "#d6ffcf";
+export const T2 = "rgba(214,255,207,.86)";
+export const T3 = "rgba(214,255,207,.72)";
+export const T4 = "rgba(214,255,207,.6)";
+// Inchiostro nero sopra i pulsanti verdi.
+export const INK = "#000000";
+// Avvisi (ultimi secondi del recupero, calo di carico): rosso arcade, distinto dal verde.
+export const WARN = "#ff3b5c";
+export const warnTint = (a) => `rgba(255,59,92,${a})`;
 
-// Tutte le sessioni condividono l'arancione: le distingue l'icona di tipologia.
+// Tinte verdi trasparenti riutilizzate.
+export const tint = (a) => `rgba(57,255,20,${a})`;
+// Bagliore al neon per titoli e valori.
+export const GLOW = `0 0 6px ${tint(0.55)}, 0 0 14px ${tint(0.25)}`;
+
+// Tutte le sessioni condividono il verde: le distingue l'icona di tipologia.
 export const grad = () => ACCENT_GRAD;
 export const color0 = () => ACCENT;
 
-const glassBase = {
-  background: "linear-gradient(180deg, rgba(255,255,255,.065) 0%, rgba(255,255,255,.03) 100%)",
-  backdropFilter: "blur(28px) saturate(160%)",
-  WebkitBackdropFilter: "blur(28px) saturate(160%)",
-  border: "1px solid rgba(255,255,255,.09)",
-  boxShadow: "0 12px 34px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.07)",
+const panelBase = {
+  background: tint(0.035),
+  border: `2px solid ${tint(0.3)}`,
+  boxShadow: `0 0 16px ${tint(0.07)}, inset 0 0 20px ${tint(0.035)}`,
   color: T1,
 };
 
 export const S = {
-  glass: { ...glassBase, borderRadius: 22 },
+  arcade: { fontFamily: FONT_ARCADE },
+  glass: { ...panelBase, borderRadius: 6 },
   glassSm: {
-    ...glassBase,
-    background: "rgba(255,255,255,.045)",
-    backdropFilter: "blur(18px) saturate(150%)",
-    WebkitBackdropFilter: "blur(18px) saturate(150%)",
-    border: "1px solid rgba(255,255,255,.08)",
-    borderRadius: 14,
-    boxShadow: "0 4px 16px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.06)",
+    ...panelBase,
+    background: tint(0.03),
+    border: `2px solid ${tint(0.22)}`,
+    borderRadius: 4,
+    boxShadow: "none",
   },
   pill: {
-    display: "inline-flex", alignItems: "center", gap: 5,
-    padding: "4px 12px", borderRadius: 99,
-    fontSize: 11, fontWeight: 700, letterSpacing: ".04em",
-    background: tint(0.1), border: `1px solid ${tint(0.32)}`,
+    display: "inline-flex", alignItems: "center", gap: 6,
+    padding: "5px 9px", borderRadius: 3,
+    fontFamily: FONT_ARCADE, fontSize: 9, letterSpacing: ".02em", lineHeight: 1.2,
+    background: tint(0.08), border: `2px solid ${tint(0.45)}`,
     color: ACCENT,
   },
   iconBtn: {
-    width: 44, height: 44, borderRadius: "50%",
-    border: "1px solid rgba(255,255,255,.12)", cursor: "pointer", padding: 0,
+    width: 44, height: 44, borderRadius: 6,
+    border: `2px solid ${tint(0.55)}`, cursor: "pointer", padding: 0,
     display: "flex", alignItems: "center", justifyContent: "center",
-    background: "linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04))",
-    color: ACCENT,
-    backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)",
-    boxShadow: "0 4px 14px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.12)",
+    background: "#000", color: ACCENT,
+    boxShadow: `0 0 10px ${tint(0.2)}`,
   },
   btnGrad: (g = ACCENT_GRAD, ink = INK) => ({
-    display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8,
-    padding: "14px 24px", borderRadius: 16, border: "none", cursor: "pointer",
-    fontSize: 15, fontWeight: 800, color: ink, background: g,
-    boxShadow: "0 10px 26px rgba(255,100,0,.28), inset 0 1px 0 rgba(255,255,255,.4)",
-    fontFamily: "system-ui,sans-serif", minHeight: 44,
+    display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 10,
+    padding: "14px 18px", borderRadius: 4, border: "none", cursor: "pointer",
+    fontFamily: FONT_ARCADE, fontSize: 12, letterSpacing: ".02em", lineHeight: 1.3,
+    color: ink, background: g,
+    boxShadow: `0 4px 0 #0f6b00, 0 0 22px ${tint(0.35)}`,
+    minHeight: 48, textTransform: "uppercase",
   }),
   btnGhost: {
-    display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6,
-    padding: "10px 18px", borderRadius: 12,
-    border: `1px solid ${tint(0.38)}`, cursor: "pointer",
-    background: tint(0.08), color: ACCENT,
-    fontSize: 13, fontWeight: 700, fontFamily: "system-ui,sans-serif",
+    display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8,
+    padding: "10px 14px", borderRadius: 4,
+    border: `2px solid ${tint(0.6)}`, cursor: "pointer",
+    background: "#000", color: ACCENT,
+    fontFamily: FONT_ARCADE, fontSize: 10, letterSpacing: ".02em", lineHeight: 1.3,
     minHeight: 44,
   },
   overlay: {
     position: "fixed", inset: 0, zIndex: 400,
     display: "flex", alignItems: "center", justifyContent: "center",
-    background: "rgba(20,21,24,.9)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)", padding: 20,
+    background: "rgba(0,0,0,.92)", padding: 20,
   },
   sectionLabel: {
-    fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: ".08em", color: tint(0.88), marginBottom: 9,
+    fontFamily: FONT_ARCADE, fontSize: 9, textTransform: "uppercase", letterSpacing: ".06em",
+    color: ACCENT, textShadow: GLOW, marginBottom: 12,
   },
-  h1: { fontSize: 26, fontWeight: 800, marginBottom: 4, color: ACCENT, letterSpacing: "-.01em" },
-  page: { padding: "20px 16px 110px", overflowY: "auto" },
-  // Riquadro icona: sfondo arancione tenue, icona arancione.
-  iconTile: (size = 44, radius = 14) => ({
-    width: size, height: size, borderRadius: radius, flexShrink: 0,
+  h1: { fontFamily: FONT_ARCADE, fontSize: 20, lineHeight: 1.3, marginBottom: 8, color: ACCENT, textShadow: GLOW },
+  page: { padding: "22px 16px 116px", overflowY: "auto" },
+  // Riquadro icona: cornice verde, fondo nero, alone leggero.
+  iconTile: (size = 44, radius = 6) => ({
+    width: size, height: size, borderRadius: Math.min(radius, 8), flexShrink: 0,
     display: "flex", alignItems: "center", justifyContent: "center",
-    background: `linear-gradient(145deg, ${tint(0.24)}, ${tint(0.07)})`,
-    border: `1px solid ${tint(0.36)}`,
-    boxShadow: `inset 0 1px 0 rgba(255,255,255,.10), 0 0 22px ${tint(0.14)}`,
+    background: tint(0.08),
+    border: `2px solid ${tint(0.55)}`,
+    boxShadow: `0 0 14px ${tint(0.18)}, inset 0 0 10px ${tint(0.08)}`,
     color: ACCENT,
   }),
 };

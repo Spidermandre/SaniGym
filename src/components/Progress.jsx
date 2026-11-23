@@ -4,7 +4,7 @@ import useWeightLog, { fmtDate } from "../hooks/useWeightLog.js";
 import Icon, { iconForSession } from "./Icon.jsx";
 import VolumePage from "./VolumePage.jsx";
 import { fmtWeight } from "../lib/weights.js";
-import { S, T1, T2, T3, T4, ACCENT, WARN, tint } from "../styles.js";
+import { S, T1, T2, T3, T4, ACCENT, WARN, INK, tint, FONT_ARCADE } from "../styles.js";
 
 const SIDE_LABEL = { dx: "destro", sx: "sinistro" };
 
@@ -38,7 +38,7 @@ function Row({ r }) {
           </div>
         </div>
         <div style={{ textAlign: "right", flexShrink: 0 }}>
-          <div style={{ fontSize: 22, fontWeight: 800, color: ACCENT, lineHeight: 1 }}>{fmtWeight(r.last.weight)}</div>
+          <div style={{ fontFamily: FONT_ARCADE, fontSize: 16, color: ACCENT, lineHeight: 1 }}>{fmtWeight(r.last.weight)}</div>
           <div style={{ fontSize: 10, color: T4, letterSpacing: ".05em" }}>KG</div>
         </div>
       </div>
@@ -105,12 +105,13 @@ export default function Progress({ week }) {
     const active = tab === key;
     return (
       <button key={key} onClick={() => setTab(key)} aria-pressed={active} style={{
-        flex: 1, minHeight: 44, borderRadius: 12, cursor: "pointer", fontSize: 13, fontWeight: 700,
-        display: "flex", alignItems: "center", justifyContent: "center", gap: 6, fontFamily: "system-ui,sans-serif",
-        border: active ? `1px solid ${tint(0.45)}` : "1px solid transparent",
-        background: active ? `linear-gradient(180deg, ${tint(0.24)}, ${tint(0.1)})` : "transparent",
-        color: active ? ACCENT : T3,
-      }}><Icon name={icon} size={17} /> {label}</button>
+        flex: 1, minHeight: 44, borderRadius: 3, cursor: "pointer", fontSize: 10, fontWeight: 400,
+        display: "flex", alignItems: "center", justifyContent: "center", gap: 6, fontFamily: FONT_ARCADE,
+        border: "none",
+        background: active ? ACCENT : "transparent",
+        boxShadow: active ? `0 0 14px ${tint(0.45)}` : "none",
+        color: active ? INK : T3,
+      }}><Icon name={icon} size={12} glow={!active} /> {label}</button>
     );
   };
 
@@ -119,7 +120,7 @@ export default function Progress({ week }) {
       <h1 style={S.h1}>Progressi</h1>
       <p style={{ color: T3, fontSize: 13, marginBottom: 16 }}>Settimana {week}/{BLOCK.length} · {block.label}</p>
 
-      <div style={{ display: "flex", gap: 4, padding: 4, borderRadius: 16, background: "rgba(255,255,255,.04)", border: "1px solid rgba(255,255,255,.08)", marginBottom: 18 }}>
+      <div style={{ display: "flex", gap: 4, padding: 4, borderRadius: 6, background: "#000", border: `2px solid ${tint(0.4)}`, marginBottom: 18 }}>
         {segBtn("carichi", "Carichi", "progress")}
         {segBtn("volume", "Volume", "sets")}
       </div>
@@ -135,7 +136,7 @@ export default function Progress({ week }) {
             ].map(([k, v]) => (
               <div key={k} style={{ ...S.glassSm, flex: 1, textAlign: "center", padding: "12px 6px" }}>
                 <div style={{ fontSize: 10, fontWeight: 700, color: tint(0.85), textTransform: "uppercase", letterSpacing: ".05em", marginBottom: 3 }}>{k}</div>
-                <div style={{ fontSize: 19, fontWeight: 800, color: ACCENT }}>{v}</div>
+                <div style={{ fontFamily: FONT_ARCADE, fontSize: 13, color: ACCENT, lineHeight: 1.4 }}>{v}</div>
               </div>
             ))}
           </div>
@@ -143,7 +144,7 @@ export default function Progress({ week }) {
           {!sections.length && !archive.length && (
             <div style={{ ...S.glass, padding: 24, textAlign: "center" }}>
               <div style={{ ...S.iconTile(64, 20), margin: "0 auto 14px" }}><Icon name="progress" size={34} /></div>
-              <h2 style={{ fontSize: 17, fontWeight: 700, marginBottom: 8, color: ACCENT }}>Nessun carico registrato</h2>
+              <h2 style={{ fontSize: 13, lineHeight: 1.5, marginBottom: 10, color: ACCENT }}>Nessun carico registrato</h2>
               <p style={{ fontSize: 13, color: T3, lineHeight: 1.6 }}>
                 Durante la sessione guidata regola il peso con <strong style={{ color: T2 }}>−</strong> e <strong style={{ color: T2 }}>+</strong>:
                 a ogni set completato viene salvato qui. Vedrai l'ultimo carico, la variazione rispetto alla volta prima e il tuo massimo.

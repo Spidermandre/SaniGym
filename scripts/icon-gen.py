@@ -1,82 +1,108 @@
-# Genera gli SVG dell'icona SaniFit (identità grigio grafite + arancione fluo).
-# Atleta con bilanciere sopra la testa, disegnato con lo stesso tratto lineare
-# arrotondato delle icone dell'app, in gradiente arancione con un leggero bagliore,
-# su una lastra grafite in stile "liquid glass".
+# Genera gli SVG dell'icona SaniFit (identità arcade: nero + verde fluo).
+# Un sollevatore in pixel art con il bilanciere sopra la testa, disegnato sulla
+# stessa griglia "a pixel" delle icone dell'app, con bagliore al neon e linee di
+# scansione da monitor CRT.
 # uso: python3 scripts/icon-gen.py <cartella-output>
 import sys
 
 out = sys.argv[1]
 
-ORANGE_LIGHT, ORANGE, ORANGE_DEEP = "#ffa24d", "#ff7a00", "#ff5500"
-G0, G1, G2 = "#3b3c42", "#232428", "#141518"   # grafite, dal centro ai bordi
-STROKE = 30
+GREEN, GREEN_LIGHT = "#39ff14", "#b6ff9e"
+
+# Metà sinistra dello sprite (12 colonne): la destra è lo specchio.
+HALF = [
+    "............",  # 0
+    "............",  # 1
+    ".##.........",  # 2  dischi esterni
+    ".###........",  # 3  dischi interni
+    ".###########",  # 4  bilanciere
+    ".###........",  # 5
+    ".##.........",  # 6
+    "......#.....",  # 7  mani
+    "......#.....",  # 8
+    ".......#..##",  # 9  braccia e testa
+    ".......#..##",  # 10
+    "........#.##",  # 11
+    "........#...",  # 12 collo (vuoto: stacca la testa dalle spalle)
+    ".........###",  # 13 spalle
+    ".........###",  # 14 petto
+    "..........##",  # 15 busto
+    "..........##",  # 16
+    ".........###",  # 17 bacino
+    "........##..",  # 18 gambe divaricate
+    ".......##...",  # 19
+    ".......##...",  # 20
+    "......###...",  # 21 piedi
+    "............",  # 22
+    "............",  # 23
+]
+ROWS = [r + r[::-1] for r in HALF]
+GRID = 24
+FLOOR_ROW = 22
 
 
-def figure():
-    # Coordinate su 512; la figura va da y≈95 (dischi) a y≈465 (piedi).
-    return f'''
-    <g fill="none" stroke="url(#orange)" stroke-width="{STROKE}" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)">
-      <!-- bilanciere e dischi -->
-      <path d="M112 150H400"/>
-      <path d="M96 96V204M416 96V204"/>
-      <path d="M140 116V184M372 116V184" stroke-width="{STROKE - 4}"/>
-      <!-- braccia tese e linea delle spalle -->
-      <path d="M192 150 226 254H286L320 150"/>
-      <!-- testa piena: leggibile anche a 16 px -->
-      <circle cx="256" cy="198" r="31" fill="url(#orange)" stroke="none"/>
-      <!-- busto e gambe, ginocchia aperte come nell'icona Gambe -->
-      <path d="M256 254V346"/>
-      <path d="M256 346 206 392 218 452M256 346 306 392 294 452"/>
-    </g>'''
+def sprite(px, ox, oy):
+    rects = []
+    for y, row in enumerate(ROWS):
+        x = 0
+        while x < GRID:
+            if row[x] == "#":
+                x0 = x
+                while x < GRID and row[x] == "#":
+                    x += 1
+                rects.append(f'<rect x="{ox + x0 * px:g}" y="{oy + y * px:g}" width="{(x - x0) * px:g}" height="{px:g}"/>')
+            else:
+                x += 1
+    # pavimento tratteggiato sotto i piedi
+    floor = "".join(
+        f'<rect x="{ox + x * px:g}" y="{oy + FLOOR_ROW * px + px * 0.35:g}" width="{px:g}" height="{px * 0.5:g}"/>'
+        for x in range(3, GRID - 3, 2)
+    )
+    return "".join(rects), floor
 
 
-def svg(rounded, scale, size=512):
-    rx = ' rx="112"' if rounded else ''
-    tf = f'translate(256 256) scale({scale}) translate(-256 -280)'
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="{size}" height="{size}" role="img" aria-label="SaniFit">
+def svg(rounded, px):
+    size = 512
+    ox = oy = (size - GRID * px) / 2
+    body, floor = sprite(px, ox, oy)
+    rx = ' rx="112"' if rounded else ""
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="SaniFit">
   <defs>
-    <radialGradient id="graphite" cx="50%" cy="34%" r="78%">
-      <stop offset="0" stop-color="{G0}"/>
-      <stop offset=".6" stop-color="{G1}"/>
-      <stop offset="1" stop-color="{G2}"/>
+    <radialGradient id="halo" cx="50%" cy="48%" r="60%">
+      <stop offset="0" stop-color="{GREEN}" stop-opacity=".22"/>
+      <stop offset=".55" stop-color="{GREEN}" stop-opacity=".05"/>
+      <stop offset="1" stop-color="{GREEN}" stop-opacity="0"/>
     </radialGradient>
-    <radialGradient id="halo" cx="50%" cy="52%" r="46%">
-      <stop offset="0" stop-color="{ORANGE}" stop-opacity=".20"/>
-      <stop offset="1" stop-color="{ORANGE}" stop-opacity="0"/>
-    </radialGradient>
-    <linearGradient id="gloss" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#ffffff" stop-opacity=".12"/>
-      <stop offset=".45" stop-color="#ffffff" stop-opacity="0"/>
+    <pattern id="scan" width="8" height="8" patternUnits="userSpaceOnUse">
+      <rect width="8" height="3" fill="{GREEN}" fill-opacity=".07"/>
+    </pattern>
+    <linearGradient id="px" gradientUnits="userSpaceOnUse" x1="0" y1="{oy:g}" x2="0" y2="{oy + GRID * px:g}">
+      <stop offset="0" stop-color="{GREEN_LIGHT}"/>
+      <stop offset=".35" stop-color="{GREEN}"/>
+      <stop offset="1" stop-color="{GREEN}"/>
     </linearGradient>
-    <!-- userSpaceOnUse: le linee orizzontali e verticali hanno bounding box piatta,
-         con le unità di default il gradiente non verrebbe disegnato -->
-    <linearGradient id="orange" gradientUnits="userSpaceOnUse" x1="96" y1="96" x2="416" y2="466">
-      <stop offset="0" stop-color="{ORANGE_LIGHT}"/>
-      <stop offset=".5" stop-color="{ORANGE}"/>
-      <stop offset="1" stop-color="{ORANGE_DEEP}"/>
-    </linearGradient>
-    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="9" result="b"/>
-      <feColorMatrix in="b" type="matrix" values="1 0 0 0 0  0 .45 0 0 0  0 0 0 0 0  0 0 0 .55 0" result="g"/>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="{px * 0.7:g}" result="b"/>
+      <feFlood flood-color="{GREEN}" flood-opacity=".85"/>
+      <feComposite in2="b" operator="in" result="g"/>
       <feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
   </defs>
-  <rect width="512" height="512"{rx} fill="url(#graphite)"/>
+  <rect width="512" height="512"{rx} fill="#000"/>
   <rect width="512" height="512"{rx} fill="url(#halo)"/>
-  <rect width="512" height="512"{rx} fill="url(#gloss)"/>
-  <rect x="3" y="3" width="506" height="506"{' rx="109"' if rounded else ''} fill="none" stroke="#ffffff" stroke-opacity=".07" stroke-width="6"/>
-  <g transform="{tf}">{figure()}
-  </g>
+  <g shape-rendering="crispEdges" fill="{GREEN}" fill-opacity=".45">{floor}</g>
+  <g shape-rendering="crispEdges" fill="url(#px)" filter="url(#glow)">{body}</g>
+  <rect width="512" height="512"{rx} fill="url(#scan)"/>
 </svg>
 '''
 
 
 variants = {
-    "icon.svg":     (True,  0.94),   # scheda del browser: angoli arrotondati
-    "full.svg":     (False, 0.94),   # PNG a pieno campo (iOS/Android applicano la loro maschera)
-    "maskable.svg": (False, 0.72),   # figura dentro la safe zone maskable
+    "icon.svg":     (True,  18),   # scheda del browser: angoli arrotondati
+    "full.svg":     (False, 18),   # PNG a pieno campo (iOS/Android applicano la loro maschera)
+    "maskable.svg": (False, 13),   # figura dentro la safe zone maskable
 }
-for name, (rounded, scale) in variants.items():
+for name, (rounded, px) in variants.items():
     with open(f"{out}/{name}", "w") as f:
-        f.write(svg(rounded, scale))
+        f.write(svg(rounded, px))
 print("ok")
